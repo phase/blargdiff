@@ -1,0 +1,2222 @@
+diff -bur 1.1/.git/config 1.2/.git/config
+--- 1.1/.git/config	2016-03-20 19:51:02.408369800 -0500
++++ 1.2/.git/config	2016-03-20 19:51:39.122025300 -0500
+@@ -7,7 +7,7 @@
+ 	ignorecase = true
+ 	hideDotFiles = dotGitOnly
+ [remote "origin"]
+-	url = https://github.com/TomokoTomoki/Blargboard
++	url = https://github.com/RoadrunnerWMC/Blargboard
+ 	fetch = +refs/heads/*:refs/remotes/origin/*
+ [branch "master"]
+ 	remote = origin
+Binary files 1.1/.git/index and 1.2/.git/index differ
+diff -bur 1.1/.git/logs/HEAD 1.2/.git/logs/HEAD
+--- 1.1/.git/logs/HEAD	2016-03-20 19:51:02.396352800 -0500
++++ 1.2/.git/logs/HEAD	2016-03-20 19:51:39.090771200 -0500
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 c52abd3243d3f2ca5093cc43b4a0c4d705a63920 phase <ph4sesaber@gmail.com> 1458521462 -0500	clone: from https://github.com/TomokoTomoki/Blargboard
++0000000000000000000000000000000000000000 caf64b210636a5cd60c8d2487c2023058fd52136 phase <ph4sesaber@gmail.com> 1458521499 -0500	clone: from https://github.com/RoadrunnerWMC/Blargboard
+diff -bur 1.1/.git/logs/refs/heads/master 1.2/.git/logs/refs/heads/master
+--- 1.1/.git/logs/refs/heads/master	2016-03-20 19:51:02.396352800 -0500
++++ 1.2/.git/logs/refs/heads/master	2016-03-20 19:51:39.090771200 -0500
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 c52abd3243d3f2ca5093cc43b4a0c4d705a63920 phase <ph4sesaber@gmail.com> 1458521462 -0500	clone: from https://github.com/TomokoTomoki/Blargboard
++0000000000000000000000000000000000000000 caf64b210636a5cd60c8d2487c2023058fd52136 phase <ph4sesaber@gmail.com> 1458521499 -0500	clone: from https://github.com/RoadrunnerWMC/Blargboard
+diff -bur 1.1/.git/logs/refs/remotes/origin/HEAD 1.2/.git/logs/refs/remotes/origin/HEAD
+--- 1.1/.git/logs/refs/remotes/origin/HEAD	2016-03-20 19:51:02.388344900 -0500
++++ 1.2/.git/logs/refs/remotes/origin/HEAD	2016-03-20 19:51:39.075144200 -0500
+@@ -1 +1 @@
+-0000000000000000000000000000000000000000 c52abd3243d3f2ca5093cc43b4a0c4d705a63920 phase <ph4sesaber@gmail.com> 1458521462 -0500	clone: from https://github.com/TomokoTomoki/Blargboard
++0000000000000000000000000000000000000000 caf64b210636a5cd60c8d2487c2023058fd52136 phase <ph4sesaber@gmail.com> 1458521499 -0500	clone: from https://github.com/RoadrunnerWMC/Blargboard
+Only in 1.1/.git/objects/pack: pack-4d87e812df53e8beff5eb93a20d4a4e051aa0007.idx
+Only in 1.1/.git/objects/pack: pack-4d87e812df53e8beff5eb93a20d4a4e051aa0007.pack
+Only in 1.2/.git/objects/pack: pack-b52cf91301c25a70f34229606ca712820bc53bd1.idx
+Only in 1.2/.git/objects/pack: pack-b52cf91301c25a70f34229606ca712820bc53bd1.pack
+diff -bur 1.1/.git/packed-refs 1.2/.git/packed-refs
+--- 1.1/.git/packed-refs	2016-03-20 19:51:02.376326400 -0500
++++ 1.2/.git/packed-refs	2016-03-20 19:51:39.043894400 -0500
+@@ -1,2 +1,2 @@
+ # pack-refs with: peeled fully-peeled 
+-c52abd3243d3f2ca5093cc43b4a0c4d705a63920 refs/remotes/origin/master
++caf64b210636a5cd60c8d2487c2023058fd52136 refs/remotes/origin/master
+diff -bur 1.1/.git/refs/heads/master 1.2/.git/refs/heads/master
+--- 1.1/.git/refs/heads/master	2016-03-20 19:51:02.392349700 -0500
++++ 1.2/.git/refs/heads/master	2016-03-20 19:51:39.090771200 -0500
+@@ -1 +1 @@
+-c52abd3243d3f2ca5093cc43b4a0c4d705a63920
++caf64b210636a5cd60c8d2487c2023058fd52136
+Only in 1.2: .gitattributes
+diff -bur 1.1/ajaxcallbacks.php 1.2/ajaxcallbacks.php
+--- 1.1/ajaxcallbacks.php	2016-03-20 19:51:02.452427400 -0500
++++ 1.2/ajaxcallbacks.php	2016-03-20 19:51:39.168904100 -0500
+@@ -81,14 +81,12 @@
+ 
+ function checkForImage(&$image, $external, $file)
+ {
+-	global $dataDir, $dataUrl;
+-
+ 	if($image) return;
+ 
+ 	if($external)
+ 	{
+-		if(file_exists($dataDir.$file))
+-			$image = $dataUrl.$file;
++		if(file_exists(DATA_DIR.$file))
++			$image = DATA_URL.$file;
+ 	}
+ 	else
+ 	{
+@@ -200,6 +198,11 @@
+ 	$blah = FetchResult("select views from {misc}");
+ 	die(number_format($blah));
+ }
++else if ($action == 'no') // notification list
++{
++	$notif = getNotifications();
++	die(json_encode($notif));
++}
+ 
+ die(__("Unknown action."));
+ ?>
+diff -bur 1.1/css/common.css 1.2/css/common.css
+--- 1.1/css/common.css	2016-03-20 19:51:02.464443200 -0500
++++ 1.2/css/common.css	2016-03-20 19:51:39.184528000 -0500
+@@ -1,5 +1,7 @@
+ /* AcmlmBoard XD - Shared elements */
+ 
++@import url('mobile.css');
++
+ .newMarker
+ {
+ 	width: 2.5em!important;
+@@ -50,90 +52,6 @@
+ 	padding-right: 2px;
+ }
+ 
+-/* mobile shit */
+-
+-#mobile-crumbs
+-{
+-	margin: 0 0 1em;
+-}
+-
+-#mobile-crumbs th
+-{
+-	text-align: left!important;
+-}
+-
+-#mobile-crumbs a
+-{
+-	display: inline-block;
+-	padding-top: 1em;
+-	padding-bottom: 1em;
+-}
+-
+-#mobile-crumbs button
+-{
+-	line-height: 2em;
+-	font-weight: bold;
+-	height: 3em;
+-	width: 3em;
+-}
+-
+-#mobile-crumbs button.notifs
+-{
+-	background: #c00;
+-	color: white;
+-	border-color: #f44;
+-}
+-
+-#mobile-sidebar-container
+-{
+-	position: absolute;
+-	top: 0;
+-	left: 0;
+-	width: 100%;
+-	height: 100%;
+-	max-width: 100%;
+-	max-height: 100%;
+-	z-index: 99998;
+-}
+-
+-#mobile-sidebar-deactivate
+-{
+-	position: absolute;
+-	top: 0;
+-	left: 0;
+-	right: 14em;
+-	height: 100%;
+-	max-height: 100%;
+-	z-index: 99999;
+-}
+-
+-#mobile-sidebar
+-{
+-	position: absolute;
+-	top: 0;
+-	right: 0;
+-	width: 14em;
+-	height: 100%;
+-	max-width: 90%;
+-	max-height: 100%;
+-	overflow: scroll;
+-	z-index: 99999;
+-}
+-
+-#mobile-sidebar td div
+-{
+-	width: 13em;
+-	word-wrap: break-word;
+-}
+-
+-#mobile-sidebar td.link a
+-{
+-	display: block;
+-	padding: 0.5em;
+-}
+-
+-.mobileNotif span.nobr { white-space: normal!important; }
+-
+ /* force header and footer to be the smallest possible */
+ #main-header, #main-footer
+ {
+@@ -169,14 +87,6 @@
+ 	text-decoration: none;
+ 	font-weight: bold;
+ }
+-a, a span
+-{
+-	     -o-transition: color .2s ease-in-out;
+-		-ms-transition: color .2s ease-in-out;
+-	        transition: color .2s ease-in-out;
+-	   -moz-transition: color .2s ease-in-out;
+-	-webkit-transition: color .2s ease-in-out;
+-}
+ 
+ a img
+ {
+@@ -223,17 +133,9 @@
+ 	display:inline-block;
+ }
+ 
+-/* Name color table */
+-.nc0x { color: #888888; } .nc1x { color: #888888; } .nc2x { color: #888888; }
+-.nc00 { color: #97ACEF; } .nc10 { color: #F185C9; } .nc20 { color: #7C60B0; }
+-.nc01 { color: #D8E8FE; } .nc11 { color: #FFB3F3; } .nc21 { color: #EEB9BA; }
+-.nc02 { color: #AFFABE; } .nc12 { color: #C762F2; } .nc22 { color: #47B53C; }
+-.nc03 { color: #FFEA95; } .nc13 { color: #C53A9E; } .nc23 { color: #F0C413; }
+-.nc04 { color: #5555FF; } .nc14 { color: #FF5588; } .nc24 { color: #FF55FF; }
+-.nc05 { color: #FF0000; } .nc15 { color: #FF0000; } .nc25 { color: #FF0000; }
+-
+ 
+ /* Widths */
++/* TODO REMOVE ME */
+ .width100
+ {
+ 	width: 100%;
+@@ -538,7 +440,7 @@
+ 	to { -webkit-transform: scale(2,2); }
+ }
+ 
+-#notifMenuButton #notifCount
++#notifMenuContainer #notifCount
+ {
+ 	color: white;
+ 	text-shadow: none;
+@@ -547,7 +449,7 @@
+ 	display: inline-block;
+ }
+ 
+-#notifMenuButton.hasNotifs #notifCount
++#notifMenuContainer.hasNotifs #notifCount
+ {
+ 	background: #c00;
+ 	border: 1px solid #f44;
+@@ -567,12 +469,19 @@
+ 	-webkit-animation-timing-function: linear;
+ }
+ 
+-#notifMenuButton.noNotif #notifCount
++#notifMenuContainer.noNotif #notifCount
+ {
+ 	background: #777;
+ 	border: 1px solid #999;
+ }
+ 
++/* hide the dropdown arrow and notif menu if there are no notifications */
++#notifMenuContainer.noNotif #notifMenuButton i, 
++#notifMenuContainer.noNotif ul.dropdownMenu
++{
++	display: none;
++}
++
+ /* Breadcrumbs */
+ 
+ table.breadcrumbs, table.breadcrumbs > tbody > tr > th
+@@ -668,6 +577,11 @@
+ 	padding: 10px;
+ }
+ 
++table.post td.post.haslayout
++{
++	padding: 0px!important;
++}
++
+ 
+ table.post td.meta
+ {
+Only in 1.2/css: mobile.css
+diff -bur 1.1/fixavatars.php 1.2/fixavatars.php
+--- 1.1/fixavatars.php	2016-03-20 19:51:02.500492200 -0500
++++ 1.2/fixavatars.php	2016-03-20 19:51:39.200154300 -0500
+@@ -12,7 +12,7 @@
+ 		$filename = 'avatars/'.$user['id'];
+ 		Query("UPDATE {users} SET picture={0} WHERE id={1}", '$root/'.$filename, $user['id']);
+ 		
+-		file_put_contents($dataDir.$filename.'.internal', hash_hmac_file('sha256', $dataDir.$filename, $user['id'].$salt));
++		file_put_contents(DATA_DIR.$filename.'.internal', hash_hmac_file('sha256', DATA_DIR.$filename, $user['id'].SALT));
+ 	}
+ 	
+ 	if ($user['minipic'] == '#INTERNAL#')
+@@ -20,7 +20,7 @@
+ 		$filename = 'minipics/'.$user['id'];
+ 		Query("UPDATE {users} SET minipic={0} WHERE id={1}", '$root/'.$filename, $user['id']);
+ 		
+-		file_put_contents($dataDir.$filename.'.internal', hash_hmac_file('sha256', $dataDir.$filename, $user['id'].$salt));
++		file_put_contents(DATA_DIR.$filename.'.internal', hash_hmac_file('sha256', DATA_DIR.$filename, $user['id'].SALT));
+ 	}
+ }
+ 
+Only in 1.2: fixsalt.php
+diff -bur 1.1/get.php 1.2/get.php
+--- 1.1/get.php	2016-03-20 19:51:02.552591300 -0500
++++ 1.2/get.php	2016-03-20 19:51:39.262662100 -0500
+@@ -9,7 +9,7 @@
+ if ($entry['deldate'] != 0)
+ 	die(__("No such file."));
+ 
+-$path = $dataDir.'uploads/'.$entry['physicalname'];
++$path = DATA_DIR.'uploads/'.$entry['physicalname'];
+ 
+ if(!file_exists($path))
+ 	die(__("No such file."));
+diff -bur 1.1/index.php 1.2/index.php
+--- 1.1/index.php	2016-03-20 19:51:03.289791700 -0500
++++ 1.2/index.php	2016-03-20 19:51:39.603562500 -0500
+@@ -2,6 +2,9 @@
+ 
+ $starttime = microtime(true);
+ 
++// change this to change your board's default page
++define('MAIN_PAGE', 'home');
++
+ $ajaxPage = false;
+ if(isset($_GET['ajax']))
+ 	$ajaxPage = true;
+@@ -13,7 +16,7 @@
+ 
+ if (isset($_GET['forcelayout']))
+ {
+-	setcookie('forcelayout', (int)$_GET['forcelayout'], time()+365*24*3600, $boardroot, "", false, true);
++	setcookie('forcelayout', (int)$_GET['forcelayout'], time()+365*24*3600, BOARD_ROOT, "", false, true);
+ 	die(header('Location: '.$_SERVER['HTTP_REFERER']));
+ }
+ 
+@@ -31,27 +34,12 @@
+ //=======================
+ // Do the page
+ 
+-$mainPage = 'home';
+-
+ if (isset($_GET['page']))
+ 	$page = $_GET['page'];
+ else
+-	$page = $mainPage;
++	$page = MAIN_PAGE;
+ if(!ctype_alnum($page))
+-	$page = $mainPage;
+-
+-// TODO make them take URL names into account? or nuke them?
+-if($page == $mainPage)
+-{
+-	if(isset($_GET['fid']) && (int)$_GET['fid'] > 0 && !isset($_GET['action']))
+-		die(header("Location: ".actionLink("forum", (int)$_GET['fid'])));
+-	if(isset($_GET['tid']) && (int)$_GET['tid'] > 0)
+-		die(header("Location: ".actionLink("thread", (int)$_GET['tid'])));
+-	if(isset($_GET['uid']) && (int)$_GET['uid'] > 0)
+-		die(header("Location: ".actionLink("profile", (int)$_GET['uid'])));
+-	if(isset($_GET['pid']) && (int)$_GET['pid'] > 0)
+-		die(header("Location: ".actionLink("post", (int)$_GET['pid'])));
+-}
++	$page = MAIN_PAGE;
+ 
+ define('CURRENT_PAGE', $page);
+ 
+@@ -127,8 +115,7 @@
+ // Panels and footer
+ 
+ require('userpanel.php');
+-
+-require('sidebar.php');
++require('menus.php');
+ 
+ $mobileswitch = '';
+ if ($mobileLayout) $mobileswitch .= 'Mobile view - ';
+@@ -170,9 +157,10 @@
+ if(!file_exists($themefile))
+ 	$themefile = "themes/$theme/style.php";
+ 
++
+ $layout_credits = 
+ '<img src="'.resourceLink('img/poweredbyblarg.png').'" style="float: left; margin-right: 3px;">
+-<a href="http://kuribo64.net/blargboard/" target="_blank">Blargboard 1.1</a> &middot; by StapleButter<br>
++<a href="http://blargboard.kuribo64.net/" target="_blank">Blargboard '.BLARG_VERSION.'</a> &middot; by StapleButter<br>
+ Based off <a href="http://abxd.dirbaio.net/" target="_blank">ABXD</a> by Dirbaio, Kawa &amp; co.<br>';
+ 	
+ 
+@@ -208,7 +196,7 @@
+ 	<script type="text/javascript" src="<?php print resourceLink("js/jquery.tablednd_0_5.js");?>"></script>
+ 	<script type="text/javascript" src="<?php print resourceLink("js/jquery.scrollTo-1.4.2-min.js");?>"></script>
+ 	<script type="text/javascript" src="<?php print resourceLink("js/jscolor/jscolor.js");?>"></script>
+-	<script type="text/javascript">boardroot = <?php print json_encode($boardroot); ?>;</script>
++	<script type="text/javascript">boardroot = <?php print json_encode(BOARD_ROOT); ?>;</script>
+ 
+ 	<?php $bucket = "pageHeader"; include("./lib/pluginloader.php"); ?>
+ 	
+@@ -225,7 +213,7 @@
+ 	<?php } ?>
+ </head>
+ <body style="width:100%; font-size: <?php echo $loguser['fontsize']; ?>%;">
+-<form action="<?php echo actionLink('login'); ?>" method="post" id="logout" style="display:none;"><input type="hidden" name="action" value="logout"></form>
++<form action="<?php echo htmlentities(actionLink('login')); ?>" method="post" id="logout" style="display:none;"><input type="hidden" name="action" value="logout"></form>
+ <?php 
+ 	if (Settings::get('maintenance'))
+ 		echo '<div style="font-size:30px; font-weight:bold; color:red; background:black; padding:5px; border:2px solid red; position:absolute; top:30px; left:30px;">MAINTENANCE MODE</div>';
+diff -bur 1.1/install.php 1.2/install.php
+--- 1.1/install.php	2016-03-20 19:51:03.301807100 -0500
++++ 1.2/install.php	2016-03-20 19:51:39.603562500 -0500
+@@ -139,10 +139,11 @@
+ 		die('Error: failed to create the config file. Check the permissions of the user running PHP.'.$footer);
+ 	
+ 	$salt = Shake(24);
+-	$saltfile = '<?php $salt = '.phpescape($salt).'; ?>';
++	define('SALT', $salt);
++	$saltfile = '<?php define(\'SALT\', '.phpescape($salt).'); ?>';
+ 	file_put_contents('config/salt.php', $saltfile);
+ 	
+-	$kurifile = '<?php $kurikey = '.phpescape(Shake(32)).'; ?>';
++	$kurifile = '<?php define(\'KURIKEY\', '.phpescape(Shake(32)).'); ?>';
+ 	file_put_contents('config/kurikey.php', $kurifile);
+ 	
+ 	require('lib/mysql.php');
+diff -bur 1.1/installSchema.php 1.2/installSchema.php
+--- 1.1/installSchema.php	2016-03-20 19:51:03.305865200 -0500
++++ 1.2/installSchema.php	2016-03-20 19:51:39.619190000 -0500
+@@ -170,6 +170,18 @@
+ 		),
+ 		"special" => $keyID. ", key `mainkey` (`uid`, `mid`)"
+ 	),
++	"notifications" => array
++	(
++		"fields" => array
++		(
++			"type" => "varchar(16)".$notNull,
++			"id" => $genericInt,
++			"user" => $genericInt,
++			"date" => $genericInt,
++			"args" => $var256,
++		),
++		"special" => "PRIMARY KEY (`type`,`id`,`user`), KEY `type` (`type`), KEY `user` (`user`), KEY `date` (`date`)"
++	),
+ 	"passmatches" => array
+ 	(
+ 		"fields" => array
+@@ -494,7 +506,7 @@
+ 			"globalblock" => $bool,
+ 			"fulllayout" => $bool,
+ 			"showemail" => $bool,
+-			"newcomments" => $bool,
++			"lastprofileview" => $genericInt,
+ 			"tempbantime" => $hugeInt,
+ 			"tempbanpl" => $genericInt,
+ 			"pluginsettings" => $text,
+diff -bur 1.1/js/tricks.js 1.2/js/tricks.js
+--- 1.1/js/tricks.js	2016-03-20 19:51:03.580067800 -0500
++++ 1.2/js/tricks.js	2016-03-20 19:51:39.775454200 -0500
+@@ -254,8 +254,7 @@
+ 
+ function getOnlineUsers()
+ {
+-	//$("#onlineUsers").load(boardroot+"ajaxcallbacks.php", "a=ou&f=" + onlineFID + "&salt=" + Date())
+-	//$("#viewCount").load(boardroot+"ajaxcallbacks.php", "a=vc&f=" + onlineFID + "&salt=" + Date())
++	// view count
+ 	$.get(boardroot+"ajaxcallbacks.php", "a=vc", function(data)
+ 	{
+ 	    var viewCount = $("#viewCount");
+@@ -265,6 +264,8 @@
+ 			viewCount.html(data);
+ 		}
+ 	});
++	
++	// online users
+ 	$.get(boardroot+"ajaxcallbacks.php", "a=ou&f=" + onlineFID, function(data)
+ 	{
+ 	    var onlineUsers = $("#onlineUsers");
+@@ -274,6 +275,27 @@
+ 			onlineUsers.html(data);
+ 		}
+ 	});
++	
++	// notifications
++	$.getJSON(boardroot+"ajaxcallbacks.php", "a=no", function(data)
++	{
++	    var notiflist = '';
++		for (var i=0; i < data.length; i++)
++			notiflist += '<li>' + data[i].text + '<br><small>' + data[i].formattedDate + '</small>';
++		
++		$('#notifList').html(notiflist);
++		
++		if ($('#notifCount').html() != data.length)
++		{
++			$('#notifCount').html(data.length);
++			
++			$('#notifMenuContainer').removeClass('noNotif hasNotifs');
++			if (data.length)
++				setTimeout(function(){$('#notifMenuContainer').addClass('hasNotifs');},20); // need to do it later so the CSS animation plays
++			else
++				$('#notifMenuContainer').addClass('noNotif');
++		}
++	});
+ }
+ 
+ 
+diff -bur 1.1/kurichallenge.php 1.2/kurichallenge.php
+--- 1.1/kurichallenge.php	2016-03-20 19:51:03.588190300 -0500
++++ 1.2/kurichallenge.php	2016-03-20 19:51:39.775454200 -0500
+@@ -10,7 +10,7 @@
+ 
+ $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_ECB);
+ $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+-$kuridata = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, md5($kurikey, true), base64_decode($_GET['data']), MCRYPT_MODE_ECB, $iv);
++$kuridata = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, md5(KURIKEY, true), base64_decode($_GET['data']), MCRYPT_MODE_ECB, $iv);
+ if (!$kuridata) die();
+ 
+ $kuridata = explode('|', $kuridata);
+@@ -18,7 +18,7 @@
+ $kuriseed = intval($kuridata[0]);
+ $check = intval($kuridata[1]);
+ $kurichallenge = $kuridata[2];
+-$kurichallenge = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, md5($kurikey.$check, true), base64_decode($kurichallenge), MCRYPT_MODE_ECB, $iv);
++$kurichallenge = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, md5(KURIKEY.$check, true), base64_decode($kurichallenge), MCRYPT_MODE_ECB, $iv);
+ if (!$kurichallenge) die();
+ 
+ $kurichallenge = explode('|', $kurichallenge);
+diff -bur 1.1/lib/bbcode_callbacks.php 1.2/lib/bbcode_callbacks.php
+--- 1.1/lib/bbcode_callbacks.php	2016-03-20 19:51:03.588190300 -0500
++++ 1.2/lib/bbcode_callbacks.php	2016-03-20 19:51:39.791081200 -0500
+@@ -30,7 +30,7 @@
+ );
+ 
+ //Allow plugins to register their own callbacks (new bbcode tags)
+-$bucket = "bbcode"; include(BOARD_CWD."/lib/pluginloader.php");
++$bucket = "bbcode"; include(__DIR__."/pluginloader.php");
+ 
+ function bbcodeBold($contents, $arg, $parenttag)
+ {
+@@ -161,7 +161,7 @@
+ 	{
+ 		$who = htmlspecialchars($match[1]);
+ 		$id = (int) $match[2];
+-		return "<div class='quote'><div class='quoteheader'><a href=\"".actionLink("post", $id)."\">$text $who</a></div><div class='quotecontent'>$contents</div></div>";
++		return "<div class='quote'><div class='quoteheader'><a href=\"".htmlentities(actionLink("post", $id))."\">$text $who</a></div><div class='quotecontent'>$contents</div></div>";
+ 	}
+ 	else
+ 	{
+diff -bur 1.1/lib/bbcode_text.php 1.2/lib/bbcode_text.php
+--- 1.1/lib/bbcode_text.php	2016-03-20 19:51:03.619444000 -0500
++++ 1.2/lib/bbcode_text.php	2016-03-20 19:51:39.834497700 -0500
+@@ -75,7 +75,7 @@
+ 	}
+ 
+ 	//Plugin bucket for allowing plugins to add replacements.
+-	$bucket = "postMangler"; include(BOARD_CWD."/lib/pluginloader.php");
++	$bucket = "postMangler"; include(__DIR__."/pluginloader.php");
+ 
+ 	return $s;
+ }
+diff -bur 1.1/lib/common.php 1.2/lib/common.php
+--- 1.1/lib/common.php	2016-03-20 19:51:03.643393400 -0500
++++ 1.2/lib/common.php	2016-03-20 19:51:39.850518600 -0500
+@@ -11,11 +11,14 @@
+ 	die(header('Location: install.php'));
+ 
+ 
++define('BLARG_VERSION', '1.2');
++
+ $boardroot = preg_replace('{/[^/]*$}', '/', $_SERVER['SCRIPT_NAME']);
++define('BOARD_ROOT', $boardroot);
+ define('BOARD_CWD', getcwd());
+ 
+-$dataDir = 'data/';
+-$dataUrl = $boardroot.$dataDir;
++define('DATA_DIR', 'data/');
++define('DATA_URL', BOARD_ROOT.DATA_DIR);
+ 
+ 
+ // Deslash GPC variables if we have magic quotes on
+@@ -43,24 +46,27 @@
+ 	return $t['sec'] + ($t['usec'] / 1000000);
+ }
+ 
++
++// undocumented feature: multiple 'boards'.
++// add in here to add board sections to your board
+ $forumBoards = array('' => 'Main forums');
+ 
+ 
+-include('config/salt.php');
++include(__DIR__."/../config/salt.php");
+ 
+-include("settingsfile.php");
++include(__DIR__."/settingsfile.php");
+ 
+-include("debug.php");
+-include("mysql.php");
+-include("mysqlfunctions.php");
+-include("settingssystem.php");
++include(__DIR__."/debug.php");
++include(__DIR__."/mysql.php");
++include(__DIR__."/mysqlfunctions.php");
++include(__DIR__."/settingssystem.php");
+ Settings::load();
+ Settings::checkPlugin("main");
+ 
+-include("feedback.php");
+-include("language.php");
+-include("snippets.php");
+-include("links.php");
++include(__DIR__."/feedback.php");
++include(__DIR__."/language.php");
++include(__DIR__."/snippets.php");
++include(__DIR__."/links.php");
+ 
+ class KillException extends Exception { }
+ date_default_timezone_set("GMT");
+@@ -74,35 +80,35 @@
+ if($q = $_SERVER['QUERY_STRING'])
+ 	$thisURL .= "?$q";
+ 
+-include("pluginsystem.php");
++include(__DIR__."/pluginsystem.php");
+ loadFieldLists();
+-include("loguser.php");
+-include("permissions.php");
++include(__DIR__."/loguser.php");
++include(__DIR__."/permissions.php");
+ 
+ if (Settings::get('maintenance') && !$loguser['root'] && (!isset($_GET['page']) || $_GET['page'] != 'login'))
+ {
+ 	die('The board is in maintenance mode, please try again later. Our apologies for the inconvenience.');
+ }
+ 
+-include('firewall.php');
+-include("ranksets.php");
+-include("bbcode_parser.php");
+-include("bbcode_text.php");
+-include("bbcode_callbacks.php");
+-include("bbcode_main.php");
+-include("post.php");
+-include("onlineusers.php");
++include(__DIR__."/notifications.php");
++include(__DIR__."/firewall.php");
++include(__DIR__."/ranksets.php");
++include(__DIR__."/bbcode_parser.php");
++include(__DIR__."/bbcode_text.php");
++include(__DIR__."/bbcode_callbacks.php");
++include(__DIR__."/bbcode_main.php");
++include(__DIR__."/post.php");
++include(__DIR__."/onlineusers.php");
+ 
+ $theme = $loguser['theme'];
+-include('lib/layout.php');
++include(__DIR__."/layout.php");
+ 
+ //Classes
+ 
+-include('smarty/Smarty.class.php');
++include(__DIR__."/smarty/Smarty.class.php");
+ $tpl = new Smarty;
+ $tpl->assign('config', array('date' => $loguser['dateformat'], 'time' => $loguser['timeformat']));
+ $tpl->assign('loguserid', $loguserid);
+ 
+-$mainPage = "board";
+-$bucket = "init"; include(BOARD_CWD."/lib/pluginloader.php");
++$bucket = "init"; include(__DIR__."/pluginloader.php");
+ 
+diff -bur 1.1/lib/diff/Diff/Renderer/inline.php 1.2/lib/diff/Diff/Renderer/inline.php
+--- 1.1/lib/diff/Diff/Renderer/inline.php	2016-03-20 19:51:03.723500400 -0500
++++ 1.2/lib/diff/Diff/Renderer/inline.php	2016-03-20 19:51:39.901440000 -0500
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-require_once 'lib/diff/Diff/Renderer.php';
++require_once __DIR__.'/../Renderer.php';
+ 
+ /**
+  * "Inline" diff renderer.
+diff -bur 1.1/lib/diff/Diff/Renderer/unified.php 1.2/lib/diff/Diff/Renderer/unified.php
+--- 1.1/lib/diff/Diff/Renderer/unified.php	2016-03-20 19:51:03.735517400 -0500
++++ 1.2/lib/diff/Diff/Renderer/unified.php	2016-03-20 19:51:39.917065500 -0500
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-require_once 'Text/Diff/Renderer.php';
++require_once __DIR__.'/../Renderer.php';
+ 
+ /**
+  * "Unified" diff renderer.
+diff -bur 1.1/lib/diff/Diff.php 1.2/lib/diff/Diff.php
+--- 1.1/lib/diff/Diff.php	2016-03-20 19:51:03.667425800 -0500
++++ 1.2/lib/diff/Diff.php	2016-03-20 19:51:39.854558500 -0500
+@@ -42,7 +42,7 @@
+         }
+         $engine = basename($engine);
+ 
+-        require_once 'lib/diff/Diff/Engine/' . $engine . '.php';
++        require_once __DIR__.'/Diff/Engine/' . $engine . '.php';
+         $class = 'Text_Diff_Engine_' . $engine;
+         $diff_engine = new $class();
+ 
+diff -bur 1.1/lib/language.php 1.2/lib/language.php
+--- 1.1/lib/language.php	2016-03-20 19:51:03.795595600 -0500
++++ 1.2/lib/language.php	2016-03-20 19:51:39.948320400 -0500
+@@ -11,9 +11,9 @@
+ 
+ $language = Settings::get("defaultLanguage");
+ 
+-include_once("./lib/lang/".$language.".php");
++include_once(__DIR__."/lang/".$language.".php");
+ if($language != "en_US")
+-	include_once("./lib/lang/".$language."_lang.php");
++	include_once(__DIR__."/lang/".$language."_lang.php");
+ 
+ function __($english, $flags = 0)
+ {
+@@ -22,9 +22,9 @@
+ 	{
+ 		if(!isset($languagePack))
+ 		{
+-			if(is_file("./lib/lang/".$language.".txt"))
++			if(is_file(__DIR__."/lang/".$language.".txt"))
+ 			{
+-				importLanguagePack("./lib/lang/".$language.".txt");
++				importLanguagePack(__DIR__."/lang/".$language.".txt");
+ 				importPluginLanguagePacks($language.".txt");
+ 			}
+ 			else
+diff -bur 1.1/lib/layout.php 1.2/lib/layout.php
+--- 1.1/lib/layout.php	2016-03-20 19:51:03.811618900 -0500
++++ 1.2/lib/layout.php	2016-03-20 19:51:39.963945500 -0500
+@@ -173,7 +173,7 @@
+ 	{
+ 		$pathPrefix = array(actionLink(0) => Settings::get("breadcrumbsMainName"));
+ 
+-		$bucket = "breadcrumbs"; include(BOARD_CWD."/lib/pluginloader.php");
++		$bucket = "breadcrumbs"; include(__DIR__."/pluginloader.php");
+ 
+ 		$path = $pathPrefix + $path;
+ 	}
+@@ -241,7 +241,7 @@
+ 	while($forum = Fetch($rFora))
+ 	{
+ 		$skipThisOne = false;
+-		$bucket = "forumListMangler"; include(BOARD_CWD."/lib/pluginloader.php");
++		$bucket = "forumListMangler"; include(__DIR__."/pluginloader.php");
+ 		if($skipThisOne)
+ 			continue;
+ 			
+diff -bur 1.1/lib/links.php 1.2/lib/links.php
+--- 1.1/lib/links.php	2016-03-20 19:51:03.827638200 -0500
++++ 1.2/lib/links.php	2016-03-20 19:51:39.963945500 -0500
+@@ -16,15 +16,15 @@
+ 
+ function actionLink($action, $id="", $args="", $urlname="")
+ {
+-	global $boardroot, $mainPage;
++	$boardroot = BOARD_ROOT;
+ 	if($boardroot == "")
+ 		$boardroot = "./";
+ 
+ 	// calling plugins at EVERY link?! way to waste performances
+-	//$bucket = "linkMangler"; include('lib/pluginloader.php');
++	//$bucket = "linkMangler"; include(__DIR__."/pluginloader.php");
+ 	
+ 	// rewritten links
+-	/*if ($action == $mainPage) $action = '';
++	/*if ($action == MAIN_PAGE) $action = '';
+ 	else $action .= '/';
+ 	
+ 	if ($id)
+@@ -39,7 +39,7 @@
+ 	// non-rewritten links
+ 	$res = "";
+ 
+-	if($action != $mainPage)
++	if($action != MAIN_PAGE)
+ 		$res .= "&page=$action";
+ 
+ 	if($id != "")
+@@ -84,21 +84,19 @@
+ 
+ function resourceLink($what)
+ {
+-	global $boardroot;
+-	return "$boardroot$what";
++	return BOARD_ROOT.$what;
+ }
+ 
+ function themeResourceLink($what)
+ {
+-	global $theme, $boardroot;
+-	return $boardroot."themes/$theme/$what";
++	global $theme;
++	return BOARD_ROOT."themes/$theme/$what";
+ }
+ 
+ function getMinipicTag($user)
+ {
+-	global $dataUrl;
+ 	if (!$user['minipic']) return '';
+-	$pic = str_replace('$root/', $dataUrl, $user['minipic']);
++	$pic = str_replace('$root/', DATA_URL, $user['minipic']);
+ 	$minipic = "<img src=\"".htmlspecialchars($pic)."\" alt=\"\" class=\"minipic\" />&nbsp;";
+ 	return $minipic;
+ }
+@@ -197,7 +195,7 @@
+ 	
+ 	$classing = ' style="color: '.htmlspecialchars($fgroup[$scolor]).';"';
+ 
+-	$bucket = "userLink"; include(BOARD_CWD.'/lib/pluginloader.php');
++	$bucket = "userLink"; include(__DIR__."/pluginloader.php");
+ 	
+ 	if (!$isbanned && $luckybastards && in_array($user['id'], $luckybastards))
+ 	{
+@@ -360,8 +358,8 @@
+ 
+ function getServerURLNoSlash($https = false)
+ {
+-    global $boardroot, $serverport;
+-    return ($https?"https":"http") . "://" . $_SERVER['SERVER_NAME'].$serverport . substr($boardroot, 0, strlen($boardroot)-1);
++    global $serverport;
++    return ($https?"https":"http") . "://" . $_SERVER['SERVER_NAME'].$serverport . substr(BOARD_ROOT, 0, strlen(BOARD_ROOT)-1);
+ }
+ 
+ function getFullRequestedURL($https = false)
+diff -bur 1.1/lib/loguser.php 1.2/lib/loguser.php
+--- 1.1/lib/loguser.php	2016-03-20 19:51:03.835651200 -0500
++++ 1.2/lib/loguser.php	2016-03-20 19:51:39.979600600 -0500
+@@ -13,7 +13,7 @@
+ if(str_replace($bots,"x",$_SERVER['HTTP_USER_AGENT']) != $_SERVER['HTTP_USER_AGENT']) // stristr()/stripos()?
+ 	$isBot = 1;
+ 
+-include("browsers.php");
++include(__DIR__."/browsers.php");
+ 
+ //Check the amount of users right now for the records
+ $rMisc = Query("select * from {misc}");
+@@ -102,7 +102,7 @@
+ 
+ if($_COOKIE['logsession'] && !$ipban)
+ {
+-	$session = Fetch(Query("SELECT * FROM {sessions} WHERE id={0}", doHash($_COOKIE['logsession'].$salt)));
++	$session = Fetch(Query("SELECT * FROM {sessions} WHERE id={0}", doHash($_COOKIE['logsession'].SALT)));
+ 	if($session)
+ 	{
+ 		$loguser = Fetch(Query("SELECT * FROM {users} WHERE id={0}", $session["user"]));
+@@ -113,10 +113,10 @@
+ 
+ if($loguser)
+ {
+-	$loguser['token'] = hash('sha1', "{$loguser['id']},{$loguser['pss']},{$salt},dr567hgdf546guol89ty896rd7y56gvers9t");
++	$loguser['token'] = hash('sha1', "{$loguser['id']},{$loguser['pss']},".SALT.",dr567hgdf546guol89ty896rd7y56gvers9t");
+ 	$loguserid = $loguser["id"];
+ 	
+-	$sessid = doHash($_COOKIE['logsession'].$salt);
++	$sessid = doHash($_COOKIE['logsession'].SALT);
+ 	Query("UPDATE {sessions} SET lasttime={0} WHERE id={1}", time(), $sessid);
+ 	Query("DELETE FROM {sessions} WHERE user={0} AND lasttime<={1}", $loguserid, time()-2592000);
+ }
+diff -bur 1.1/lib/mysql.php 1.2/lib/mysql.php
+--- 1.1/lib/mysql.php	2016-03-20 19:51:03.891761800 -0500
++++ 1.2/lib/mysql.php	2016-03-20 19:51:39.995200400 -0500
+@@ -1,7 +1,7 @@
+ <?php
+ // AcmlmBoard XD support - MySQL database wrapper functions
+ 
+-include("config/database.php");
++include(__DIR__."/../config/database.php");
+ 
+ $queries = 0;
+ 
+@@ -210,7 +210,7 @@
+ 	global $fieldLists;
+ 
+ 	//Allow plugins to add their own!
+-	$bucket = "fieldLists"; include(BOARD_CWD."/lib/pluginloader.php");
++	$bucket = "fieldLists"; include(__DIR__."/pluginloader.php");
+ }
+ 
+ ?>
+diff -bur 1.1/lib/mysqlfunctions.php 1.2/lib/mysqlfunctions.php
+--- 1.1/lib/mysqlfunctions.php	2016-03-20 19:51:03.911750300 -0500
++++ 1.2/lib/mysqlfunctions.php	2016-03-20 19:51:39.995200400 -0500
+@@ -36,7 +36,7 @@
+ 	global $dbname, $dbpref;
+ 
+ 	//Load the board tables.
+-	include("installSchema.php");
++	include(__DIR__."/../installSchema.php");
+ 
+ 	//Allow plugins to add their own tables!
+ 	if (NumRows(Query("show table status from $dbname like '{enabledplugins}'")))
+@@ -44,8 +44,8 @@
+ 		$rPlugins = Query("select * from {enabledplugins}");
+ 		while($plugin = Fetch($rPlugins))
+ 		{
+-			$plugin = $plugin["plugin"];
+-			$path = "plugins/$plugin/installSchema.php";
++			$plugin = str_replace(array('.','/','\\'), '', $plugin['plugin']);
++			$path = __DIR__."/../plugins/$plugin/installSchema.php";
+ 			if(file_exists($path))
+ 				include($path);
+ 		}
+Only in 1.2/lib: notifications.php
+diff -bur 1.1/lib/permissions.php 1.2/lib/permissions.php
+--- 1.1/lib/permissions.php	2016-03-20 19:51:03.959815900 -0500
++++ 1.2/lib/permissions.php	2016-03-20 19:51:40.026452100 -0500
+@@ -1,6 +1,6 @@
+ <?php
+ 
+-require 'lib/permstrings.php';
++require __DIR__."/permstrings.php";
+ 
+ $usergroups = array();
+ $grouplist = array();
+diff -bur 1.1/lib/permstrings.php 1.2/lib/permstrings.php
+--- 1.1/lib/permstrings.php	2016-03-20 19:51:03.967825800 -0500
++++ 1.2/lib/permstrings.php	2016-03-20 19:51:40.026452100 -0500
+@@ -70,6 +70,6 @@
+ 
+ $guestPerms = array('forum.viewforum');
+ 
+-$bucket = 'permStrings'; include(BOARD_CWD."/lib/pluginloader.php");
++$bucket = 'permStrings'; include(__DIR__."/pluginloader.php");
+ 
+ ?>
+\ No newline at end of file
+diff -bur 1.1/lib/post.php 1.2/lib/post.php
+--- 1.1/lib/post.php	2016-03-20 19:51:04.011883800 -0500
++++ 1.2/lib/post.php	2016-03-20 19:51:40.042079500 -0500
+@@ -49,7 +49,7 @@
+ 
+ function getSyndrome($activity)
+ {
+-	include("syndromes.php");
++	include(__DIR__."/syndromes.php");
+ 	$soFar = "";
+ 	foreach($syndromes as $minAct => $syndrome)
+ 		if($activity >= $minAct)
+@@ -85,8 +85,6 @@
+ 
+ function makePostText($post, $poster)
+ {
+-	global $boardroot, $dataDir;
+-
+ 	$noSmilies = $post['options'] & 2;
+ 
+ 	//Do Ampersand Tags
+@@ -98,7 +96,7 @@
+ 		"date" => formatdate($post['date']),
+ 		"rank" => GetRank($poster['rankset'], $poster['posts']),
+ 	);
+-	$bucket = "amperTags"; include(BOARD_CWD."/lib/pluginloader.php");
++	$bucket = "amperTags"; include(__DIR__."/pluginloader.php");
+ 
+ 	if($poster['signature'])
+ 		if(!$poster['signsep'])
+@@ -130,9 +128,9 @@
+ 		
+ 		while ($attach = Fetch($attachs))
+ 		{
+-			$url = $boardroot.'get.php?id='.htmlspecialchars($attach['id']);
++			$url = BOARD_ROOT.'get.php?id='.htmlspecialchars($attach['id']);
+ 			$linkurl = $ispreview ? '#' : $url;
+-			$filesize = filesize($dataDir.'uploads/'.$attach['physicalname']);
++			$filesize = filesize(DATA_DIR.'uploads/'.$attach['physicalname']);
+ 			
+ 			$attachblock .= '<br><div class="post_attachment">';
+ 			
+@@ -180,7 +178,7 @@
+ //		* noreplylinks: if set, no links to newreply.php (Quote/ID) are placed in the metabar (POST_NORMAL only)
+ function makePost($post, $type, $params=array())
+ {
+-	global $loguser, $loguserid, $usergroups, $isBot, $blocklayouts, $dataDir, $dataUrl;
++	global $loguser, $loguserid, $usergroups, $isBot, $blocklayouts;
+ 	
+ 	$poster = getDataPrefix($post, 'u_');
+ 	$post['userlink'] = UserLink($poster);
+@@ -263,7 +261,7 @@
+ 				}
+ 				
+ 				// plugins should add to $extraLinks
+-				$bucket = "topbar"; include(BOARD_CWD."/lib/pluginloader.php");
++				$bucket = "topbar"; include(__DIR__."/pluginloader.php");
+ 			}
+ 			
+ 			$links['extra'] = $extraLinks;
+@@ -317,12 +315,12 @@
+ 
+ 	if($post['mood'] > 0)
+ 	{
+-		if(file_exists("${dataDir}avatars/".$poster['id']."_".$post['mood']))
+-			$sidebar['avatar'] = "<img src=\"${dataUrl}avatars/".$poster['id']."_".$post['mood']."\" alt=\"\">";
++		if(file_exists(DATA_DIR."avatars/".$poster['id']."_".$post['mood']))
++			$sidebar['avatar'] = "<img src=\"".DATA_URL."avatars/".$poster['id']."_".$post['mood']."\" alt=\"\">";
+ 	}
+ 	else if ($poster['picture'])
+ 	{
+-		$pic = str_replace('$root/', $dataUrl, $poster['picture']);
++		$pic = str_replace('$root/', DATA_URL, $poster['picture']);
+ 		$sidebar['avatar'] = "<img src=\"".htmlspecialchars($pic)."\" alt=\"\">";
+ 	}
+ 
+@@ -343,7 +341,7 @@
+ 		$sidebar['isonline'] = __("User is <strong>online</strong>");
+ 	
+ 	$sidebarExtra = array();
+-	$bucket = "sidebar"; include(BOARD_CWD."/lib/pluginloader.php");
++	$bucket = "sidebar"; include(__DIR__."/pluginloader.php");
+ 	$sidebar['extra'] = $sidebarExtra;
+ 	
+ 	$post['sidebar'] = $sidebar;
+diff -bur 1.1/lib/ranksets.php 1.2/lib/ranksets.php
+--- 1.1/lib/ranksets.php	2016-03-20 19:51:04.023899200 -0500
++++ 1.2/lib/ranksets.php	2016-03-20 19:51:40.042079500 -0500
+@@ -9,7 +9,7 @@
+ 	$ranksetData = array();
+ 	$ranksetNames = array();
+ 
+-	$dir = "ranksets/";
++	$dir = __DIR__."/../ranksets/";
+ 
+ 	if (is_dir($dir))
+ 	{
+diff -bur 1.1/lib/settingssystem.php 1.2/lib/settingssystem.php
+--- 1.1/lib/settingssystem.php	2016-03-20 19:51:04.047932000 -0500
++++ 1.2/lib/settingssystem.php	2016-03-20 19:51:40.057705400 -0500
+@@ -66,10 +66,10 @@
+ 
+ 		//Get the setting list.
+ 		if($pluginname == "main")
+-			include("settingsfile.php");
++			include(__DIR__."/settingsfile.php");
+ 		else
+ 		{
+-			@include("./plugins/".$plugins[$pluginname]['dir']."/settingsfile.php");
++			@include(__DIR__."/../plugins/".$plugins[$pluginname]['dir']."/settingsfile.php");
+ 		}
+ 		return $settings;
+ 	}
+diff -bur 1.1/lib/snippets.php 1.2/lib/snippets.php
+--- 1.1/lib/snippets.php	2016-03-20 19:51:05.912916600 -0500
++++ 1.2/lib/snippets.php	2016-03-20 19:51:40.998845200 -0500
+@@ -17,6 +17,32 @@
+ 	return startsWith(strtolower($a), strtolower($b));
+ }
+ 
++// returns FALSE if it fails.
++function QueryURL($url)
++{
++	if (function_exists('curl_init'))
++	{
++		$page = curl_init($url);
++		if ($page === FALSE)
++			return FALSE;
++		
++		curl_setopt($page, CURLOPT_TIMEOUT, 10);
++		curl_setopt($page, CURLOPT_CONNECTTIMEOUT, 10);
++		curl_setopt($page, CURLOPT_RETURNTRANSFER, TRUE);
++		curl_setopt($page, CURLOPT_USERAGENT, 'Blargboard/'.BLARG_VERSION);
++			
++		$result = curl_exec($page);
++		curl_close($page);
++		return $result;
++	}
++	else if (ini_get('allow_url_fopen'))
++	{
++		return file_get_contents($url);
++	}
++	else
++		return FALSE;
++}
++
+ 
+ function format()
+ {
+@@ -94,67 +120,6 @@
+ 	return floor($sec/86400)." day".($sec >= 172800 ? "s" : "");
+ }
+ 
+-function notifsort($a, $b)
+-{
+-	if ($a['date'] == $b['date']) return 0;
+-	return ($a['date'] > $b['date']) ? -1 : 1;
+-}
+-
+-function getNotifications()
+-{
+-	global $loguserid, $loguser;
+-	$notifs = array();
+-	
+-	if (!$loguserid) return $notifs;
+-	
+-	$staffpms = '';
+-	if (HasPermission('admin.viewstaffpms')) $staffpms = ' OR p.userto={1}';
+-	
+-	$unreadpms = Query("	SELECT 
+-								p.*, 
+-								pt.title pmtitle, 
+-								u.(_userfields) 
+-							FROM 
+-								{pmsgs} p 
+-								LEFT JOIN {pmsgs_text} pt ON pt.pid=p.id 
+-								LEFT JOIN {users} u ON u.id=p.userfrom 
+-							WHERE 
+-							(p.userto={0}{$staffpms}) AND p.msgread=0 AND p.drafting=0", 
+-						$loguserid, -1);
+-	
+-	while ($pm = Fetch($unreadpms))
+-	{
+-		$userdata = getDataPrefix($pm, 'u_');
+-		
+-		$notifs[] = array
+-		(
+-			'date' => $pm['date'],
+-			'text' => format(__('{2}New private message from {0}{3}{4}{2}{1}{3}'), 
+-				userLink($userdata), actionLinkTag(htmlspecialchars($pm['pmtitle']), 'showprivate', $pm['id']),
+-				'<span class="nobr">', '</span>', '<br>'),
+-		);
+-	}
+-	
+-	if ($loguser['newcomments'])
+-	{
+-		$lastcmtdate = FetchResult("SELECT MAX(date) FROM {usercomments} WHERE uid={0}", $loguserid);
+-		
+-		$notifs[] = array
+-		(
+-			'date' => $lastcmtdate,
+-			'text' => format(__('{1}New comments in {0}{2}'), actionLinkTag(__('your profile'), 'profile', $loguserid, '', $loguser['name']),
+-				'<span class="nobr">', '</span>'),
+-		);
+-	}
+-	
+-	usort($notifs, 'notifsort');
+-	
+-	foreach ($notifs as $i=>$n)
+-		$notifs[$i]['formattedDate'] = relativedate($n['date']);
+-	
+-	return $notifs;
+-}
+-
+ 
+ // TODO remove
+ function RecalculateKarma($uid)
+@@ -411,5 +376,3 @@
+ {
+ 	return Plural($params['num'], $params['what']);
+ }
+-
+-?>
+diff -bur 1.1/lib/upload.php 1.2/lib/upload.php
+--- 1.1/lib/upload.php	2016-03-20 19:51:05.932943000 -0500
++++ 1.2/lib/upload.php	2016-03-20 19:51:41.014471400 -0500
+@@ -4,8 +4,8 @@
+ 
+ function UploadFile($file, $parenttype, $parentid, $cap, $description='', $temporary=false)
+ {
+-	global $dataDir, $loguser, $loguserid, $salt;
+-	$targetdir = $dataDir.'uploads';
++	global $loguser, $loguserid;
++	$targetdir = DATA_DIR.'uploads';
+ 	
+ 	$filedata = $_FILES[$file];
+ 	$filename = $filedata['name'];
+@@ -30,7 +30,7 @@
+ 
+ 		$fullpath = $targetdir.'/'.$pname;
+ 		copy($temp, $fullpath);
+-		file_put_contents($fullpath.'.hash', hash_hmac_file('sha256', $fullpath, $salt));
++		file_put_contents($fullpath.'.hash', hash_hmac_file('sha256', $fullpath, SALT));
+ 		
+ 		Report("[b]".$loguser['name']."[/] uploaded file \"[b]".$filename."[/]\"", false);
+ 
+@@ -40,11 +40,9 @@
+ 
+ function DeleteUpload($path, $userid)
+ {
+-	global $salt;
+-	
+ 	if (!file_exists($path.'.hash')) return;
+ 	$hash = file_get_contents($path.'.hash');
+-	if ($hash === hash_hmac_file('sha256', $path, $userid.$salt))
++	if ($hash === hash_hmac_file('sha256', $path, $userid.SALT))
+ 	{
+ 		@unlink($path);
+ 		@unlink($path.'.hash');
+@@ -53,8 +51,7 @@
+ 
+ function CleanupUploads()
+ {
+-	global $dataDir, $salt;
+-	$targetdir = $dataDir.'uploads';
++	$targetdir = DATA_DIR.'uploads';
+ 	
+ 	$timebeforedel = time()-604800; // one week
+ 	$todelete = Query("SELECT physicalname, user, filename FROM {uploadedfiles} WHERE deldate!=0 AND deldate<{0}", $timebeforedel);
+@@ -73,8 +70,7 @@
+ 
+ function HandlePostAttachments($postid, $final)
+ {
+-	global $dataDir;
+-	$targetdir = $dataDir.'uploads';
++	$targetdir = DATA_DIR.'uploads';
+ 	
+ 	if (!Settings::get('postAttach')) return array();
+ 	
+Only in 1.2: menus.php
+diff -bur 1.1/pages/admin.php 1.2/pages/admin.php
+--- 1.1/pages/admin.php	2016-03-20 19:51:05.960980100 -0500
++++ 1.2/pages/admin.php	2016-03-20 19:51:41.030097700 -0500
+@@ -10,8 +10,16 @@
+ MakeCrumbs(array(actionLink("admin") => __('Admin')));
+ 
+ 
++if (function_exists('curl_init'))
++	$protstatus = __('Enabled (using cURL)');
++else if (ini_get('allow_url_fopen'))
++	$protstatus = __('Enabled (using fopen)');
++else
++	$protstatus = __('Disabled');
++
+ 
+ $adminInfo = array();
++$adminInfo[__('Proxy protection')] = $protstatus;
+ $adminInfo[__('Last viewcount milestone')] = $misc['milestone'];
+ 
+ 
+diff -bur 1.1/pages/editavatars.php 1.2/pages/editavatars.php
+--- 1.1/pages/editavatars.php	2016-03-20 19:51:05.989017600 -0500
++++ 1.2/pages/editavatars.php	2016-03-20 19:51:41.045724800 -0500
+@@ -24,8 +24,8 @@
+ 	{
+ 		Query("delete from {moodavatars} where uid={0} and mid={1}", $loguserid, $mid);
+ 		Query("update {posts} set mood=0 where user={0} and mood={1}", $loguserid, $mid);
+-		if(file_exists("{$dataDir}avatars/".$loguserid."_".$mid))
+-			unlink("{$dataDir}avatars/".$loguserid."_".$mid);
++		if(file_exists(DATA_DIR."avatars/".$loguserid."_".$mid))
++			unlink(DATA_DIR."avatars/".$loguserid."_".$mid);
+ 			
+ 		die(header('Location: '.actionLink('editavatars')));
+ 	}
+@@ -63,7 +63,7 @@
+ 			if(!$error)
+ 			{
+ 				$tmpfile = $_FILES['picture']['tmp_name'];
+-				$file = "{$dataDir}avatars/".$loguserid."_".$mid;
++				$file = DATA_DIR."avatars/".$loguserid."_".$mid;
+ 
+ 				if($_POST['name'] == "")
+ 					$_POST['name'] = "#".$mid;
+@@ -109,10 +109,10 @@
+ {
+ 	$row = array();
+ 	
+-	$row['avatar'] = "<img src=\"{$dataDir}avatars/{$loguserid}_{$mood['mid']}\" alt=\"\">";
++	$row['avatar'] = "<img src=\"".DATA_URL."avatars/{$loguserid}_{$mood['mid']}\" alt=\"\">";
+ 	
+ 	$row['field'] = "
+-				<form method=\"post\" action=\"".actionLink("editavatars")."\">
++				<form method=\"post\" action=\"".htmlentities(actionLink("editavatars"))."\">
+ 					<input type=\"hidden\" name=\"mid\" value=\"{$mood['mid']}\">
+ 					<input type=\"text\" id=\"name{$mood['mid']}\" name=\"name\" size=80 maxlength=60 value=\"".htmlspecialchars($mood['name'])."\"><br>
+ 					<input type=\"submit\" name=\"actionrename\" value=\"".__("Rename")."\">
+@@ -124,7 +124,7 @@
+ }
+ 
+ $newField = "
+-				<form method=\"post\" action=\"".actionLink("editavatars")."\" enctype=\"multipart/form-data\">
++				<form method=\"post\" action=\"".htmlentities(actionLink("editavatars"))."\" enctype=\"multipart/form-data\">
+ 					".__("Name:")." <input type=\"text\" id=\"newName\" name=\"name\" size=80 maxlength=60><br>
+ 					".__("Image:")." <input type=\"file\" id=\"pic\" name=\"picture\"><br>
+ 					<input type=\"submit\" name=\"actionadd\" value=\"".__("Add")."\">
+diff -bur 1.1/pages/editfora.php 1.2/pages/editfora.php
+--- 1.1/pages/editfora.php	2016-03-20 19:51:06.009043700 -0500
++++ 1.2/pages/editfora.php	2016-03-20 19:51:41.061352200 -0500
+@@ -415,7 +415,7 @@
+ 	}
+ 
+ 	echo "
+-	<form method=\"post\" id=\"forumform\" action=\"".actionLink("editfora")."\">
++	<form method=\"post\" id=\"forumform\" action=\"".htmlentities(actionLink("editfora"))."\">
+ 	<input type=\"hidden\" name=\"key\" value=\"".$loguser['token']."\">
+ 	<input type=\"hidden\" name=\"id\" value=\"$fid\">";
+ 	
+@@ -493,7 +493,7 @@
+ 	}
+ 
+ 	echo "
+-	<form method=\"post\" id=\"forumform\" action=\"".actionLink("editfora")."\">
++	<form method=\"post\" id=\"forumform\" action=\"".htmlentities(actionLink("editfora"))."\">
+ 	<input type=\"hidden\" name=\"key\" value=\"".$loguser["token"]."\">
+ 	<input type=\"hidden\" name=\"id\" value=\"$cid\">";
+ 	
+diff -bur 1.1/pages/editpost.php 1.2/pages/editpost.php
+--- 1.1/pages/editpost.php	2016-03-20 19:51:06.057108500 -0500
++++ 1.2/pages/editpost.php	2016-03-20 19:51:41.092605500 -0500
+@@ -219,12 +219,12 @@
+ 	'nopl' => "<label><input type=\"checkbox\" $nopl name=\"nopl\">&nbsp;".__("Disable post layout", 1)."</label>",
+ 	'nosm' => "<label><input type=\"checkbox\" $nosm name=\"nosm\">&nbsp;".__("Disable smilies", 1)."</label>",
+ 	
+-	'btnPost' => "<input type=\"submit\" name=\"actionpost\" value=\"".__("Post")."\">",
++	'btnPost' => "<input type=\"submit\" name=\"actionpost\" value=\"".__("Save")."\">",
+ 	'btnPreview' => "<input type=\"submit\" name=\"actionpreview\" value=\"".__("Preview")."\">",
+ );
+ 
+ echo "
+-	<form name=\"postform\" action=\"".actionLink("editpost", $pid)."\" method=\"post\" enctype=\"multipart/form-data\">";
++	<form name=\"postform\" action=\"".htmlentities(actionLink("editpost", $pid))."\" method=\"post\" enctype=\"multipart/form-data\">";
+ 
+ RenderTemplate('form_editpost', array('fields' => $fields));
+ 
+diff -bur 1.1/pages/editprofile.php 1.2/pages/editprofile.php
+--- 1.1/pages/editprofile.php	2016-03-20 19:51:06.081141600 -0500
++++ 1.2/pages/editprofile.php	2016-03-20 19:51:41.108231400 -0500
+@@ -237,7 +237,7 @@
+ 
+ 	if($_POST['currpassword'] != "")
+ 	{
+-		$sha = doHash($_POST['currpassword'].$salt.$loguser['pss']);
++		$sha = doHash($_POST['currpassword'].SALT.$loguser['pss']);
+ 		if($loguser['password'] == $sha)
+ 			$passwordEntered = true;
+ 		else
+@@ -363,10 +363,10 @@
+ 						if (substr($user[$field],0,6) == '$root/')
+ 						{
+ 							// verify that the file they want us to delete is an internal avatar and not something else
+-							$path = str_replace('$root/', $dataDir, $user[$field]);
++							$path = str_replace('$root/', DATA_DIR, $user[$field]);
+ 							if (!file_exists($path.'.internal')) continue;
+ 							$hash = file_get_contents($path.'.internal');
+-							if ($hash === hash_hmac_file('sha256', $path, $userid.$salt))
++							if ($hash === hash_hmac_file('sha256', $path, $userid.SALT))
+ 							{
+ 								@unlink($path);
+ 								@unlink($path.'.internal');
+@@ -464,7 +464,7 @@
+ 
+ function HandlePicture($field, $type, &$usepic)
+ {
+-	global $userid, $dataDir, $salt;
++	global $userid;
+ 	
+ 	if($type == 0)
+ 	{
+@@ -524,7 +524,7 @@
+ 		if(!$oversize)
+ 		{
+ 			//Just copy it over.
+-			copy($tempFile, $dataDir.$targetFile);
++			copy($tempFile, DATA_DIR.$targetFile);
+ 		}
+ 		else
+ 		{
+@@ -539,7 +539,7 @@
+ 				$targetImage = imagecreatetruecolor(floor($maxDim * $ratio), $maxDim);
+ 				imagecopyresampled($targetImage, $sourceImage, 0,0,0,0, $maxDim * $ratio, $maxDim, $width, $height);
+ 			}
+-			imagepng($targetImage, $dataDir.$targetFile);
++			imagepng($targetImage, DATA_DIR.$targetFile);
+ 			imagedestroy($targetImage);
+ 		}
+ 	}
+@@ -553,11 +553,11 @@
+ 			return format(__("Dimensions of {0} must be at most {1} by {1} pixels."), $errorname, $maxDim);
+ 		}
+ 		else
+-			copy($tempFile, $dataDir.$targetFile);
++			copy($tempFile, DATA_DIR.$targetFile);
+ 	}
+ 	
+ 	// file created to verify that the avatar was created here
+-	file_put_contents($dataDir.$targetFile.'.internal', hash_hmac_file('sha256', $dataDir.$targetFile, $userid.$salt));
++	file_put_contents(DATA_DIR.$targetFile.'.internal', hash_hmac_file('sha256', DATA_DIR.$targetFile, $userid.SALT));
+ 	
+ 	$usepic = '$root/'.$targetFile;
+ 	return true;
+@@ -566,7 +566,7 @@
+ // Special field-specific callbacks
+ function HandlePassword($field, $item)
+ {
+-	global $sets, $salt, $user, $loguser, $loguserid;
++	global $sets, $user, $loguser, $loguserid;
+ 	if($_POST[$field] != "" && $_POST['repeat'.$field] != "" && $_POST['repeat'.$field] !== $_POST[$field])
+ 	{
+ 		return __("To change your password, you must type it twice without error.");
+@@ -578,12 +578,12 @@
+ 	if($_POST[$field])
+ 	{
+ 		$newsalt = Shake();
+-		$sha = doHash($_POST[$field].$salt.$newsalt);
++		$sha = doHash($_POST[$field].SALT.$newsalt);
+ 		$_POST[$field] = $sha;
+ 		$sets[] = "pss = '".$newsalt."'";
+ 
+ 		//Now logout all the sessions that aren't this one, for security.
+-		Query("DELETE FROM {sessions} WHERE id != {0} and user = {1}", doHash($_COOKIE['logsession'].$salt), $user["id"]);
++		Query("DELETE FROM {sessions} WHERE id != {0} and user = {1}", doHash($_COOKIE['logsession'].SALT), $user['id']);
+ 	}
+ 
+ 	return false;
+@@ -855,7 +855,7 @@
+ 
+ 
+ echo "
+-	<form action=\"".actionLink("editprofile")."\" method=\"post\" enctype=\"multipart/form-data\">
++	<form action=\"".htmlentities(actionLink("editprofile"))."\" method=\"post\" enctype=\"multipart/form-data\">
+ ";
+ 
+ RenderTemplate('form_editprofile', array(
+diff -bur 1.1/pages/editsettings.php 1.2/pages/editsettings.php
+--- 1.1/pages/editsettings.php	2016-03-20 19:51:06.093175200 -0500
++++ 1.2/pages/editsettings.php	2016-03-20 19:51:41.123921200 -0500
+@@ -84,7 +84,7 @@
+ 
+ 
+ echo "
+-	<form action=\"".actionLink("editsettings")."\" method=\"post\">
++	<form action=\"".htmlentities(actionLink("editsettings"))."\" method=\"post\">
+ 		<input type=\"hidden\" name=\"_plugin\" value=\"$plugin\">
+ 		<input type=\"hidden\" name=\"key\" value=\"{$loguser['token']}\">";
+ 
+diff -bur 1.1/pages/editsmilies.php 1.2/pages/editsmilies.php
+--- 1.1/pages/editsmilies.php	2016-03-20 19:51:06.101167300 -0500
++++ 1.2/pages/editsmilies.php	2016-03-20 19:51:41.132319500 -0500
+@@ -73,7 +73,7 @@
+ 		To edit, change either code or image fields to <em>not</em> match their hidden counterparts.
+ 	</div>
+ 
+-	<form method=\"post\" action=\"".actionLink("editsmilies")."\">
++	<form method=\"post\" action=\"".htmlentities(actionLink("editsmilies"))."\">
+ 
+ 		<table class=\"outline margin\" style=\"width: 30%;\">
+ 			<tr class=\"header1\">
+diff -bur 1.1/pages/editthread.php 1.2/pages/editthread.php
+--- 1.1/pages/editthread.php	2016-03-20 19:51:06.109178300 -0500
++++ 1.2/pages/editthread.php	2016-03-20 19:51:41.132319500 -0500
+@@ -247,7 +247,7 @@
+ 
+ echo "
+ 	<script src=\"".resourceLink("js/threadtagging.js")."\"></script>
+-	<form action=\"".actionLink("editthread")."\" method=\"post\">";
++	<form action=\"".htmlentities(actionLink("editthread"))."\" method=\"post\">";
+ 	
+ RenderTemplate('form_editthread', array(
+ 	'fields' => $fields,
+diff -bur 1.1/pages/home.php 1.2/pages/home.php
+--- 1.1/pages/home.php	2016-03-20 19:51:06.153236400 -0500
++++ 1.2/pages/home.php	2016-03-20 19:51:41.163575900 -0500
+@@ -59,7 +59,7 @@
+ $tpp = 5;
+ 
+ //echo '<br>';
+-$links = array('<a href="'.$boardroot.'rss.php">'.__('RSS feed').'</a>');
++$links = array('<a href="'.BOARD_ROOT.'rss.php">'.__('RSS feed').'</a>');
+ if (HasPermission('forum.postthreads', $forum['id']))
+ 	$links[] = actionLinkTag(__('Post new'), 'newthread', $forum['id']);
+ 
+diff -bur 1.1/pages/ipbans.php 1.2/pages/ipbans.php
+--- 1.1/pages/ipbans.php	2016-03-20 19:51:06.165251800 -0500
++++ 1.2/pages/ipbans.php	2016-03-20 19:51:41.163575900 -0500
+@@ -58,7 +58,7 @@
+ 	$banList
+ </table>
+ 
+-<form action=\"".actionLink("ipbans")."\" method=\"post\">
++<form action=\"".htmlentities(actionLink("ipbans"))."\" method=\"post\">
+ 	<table class=\"outline margin width50\">
+ 		<tr class=\"header1\">
+ 			<th colspan=\"2\">
+diff -bur 1.1/pages/ipquery.php 1.2/pages/ipquery.php
+--- 1.1/pages/ipquery.php	2016-03-20 19:51:06.169258500 -0500
++++ 1.2/pages/ipquery.php	2016-03-20 19:51:41.179202600 -0500
+@@ -62,7 +62,7 @@
+ else
+ 	$userList = "<tr class=\"cell0\"><td colspan=\"6\">".__("No users")."</td></tr>";
+ 
+-echo "<form id=\"banform\" action=\"".actionLink('ipbans')."\" method=\"post\">
++echo "<form id=\"banform\" action=\"".htmlentities(actionLink('ipbans'))."\" method=\"post\">
+ 	<input type=\"hidden\" name=\"ip\" value=\"$ip\">
+ 	<input type=\"hidden\" name=\"reason\" value=\"".htmlentities($ipBanComment)."\">
+ 	<input type=\"hidden\" name=\"days\" value=\"0\">
+diff -bur 1.1/pages/login.php 1.2/pages/login.php
+--- 1.1/pages/login.php	2016-03-20 19:51:06.209312600 -0500
++++ 1.2/pages/login.php	2016-03-20 19:51:41.194827700 -0500
+@@ -4,11 +4,11 @@
+ 
+ if($_POST['action'] == "logout")
+ {
+-	setcookie("logsession", "", 2147483647, $boardroot, "", false, true);
++	setcookie("logsession", "", 2147483647, BOARD_ROOT, "", false, true);
+ 	Query("UPDATE {users} SET loggedin = 0 WHERE id={0}", $loguserid);
+-	Query("DELETE FROM {sessions} WHERE id={0}", doHash($_COOKIE['logsession'].$salt));
++	Query("DELETE FROM {sessions} WHERE id={0}", doHash($_COOKIE['logsession'].SALT));
+ 
+-	die(header("Location: $boardroot"));
++	die(header("Location: ".BOARD_ROOT));
+ }
+ elseif(isset($_POST['actionlogin']))
+ {
+@@ -18,7 +18,7 @@
+ 	$user = Fetch(Query("select * from {users} where name={0}", $_POST['name']));
+ 	if($user)
+ 	{
+-		$sha = doHash($pass.$salt.$user['pss']);
++		$sha = doHash($pass.SALT.$user['pss']);
+ 		if($user['password'] === $sha)
+ 			$okay = true;
+ 	}
+@@ -37,8 +37,8 @@
+ 		//TODO: Tie sessions to IPs if user has enabled it (or probably not)
+ 
+ 		$sessionID = Shake();
+-		setcookie("logsession", $sessionID, 2147483647, $boardroot, "", false, true);
+-		Query("INSERT INTO {sessions} (id, user, autoexpire) VALUES ({0}, {1}, {2})", doHash($sessionID.$salt), $user["id"], $_POST["session"]?1:0);
++		setcookie("logsession", $sessionID, 2147483647, BOARD_ROOT, "", false, true);
++		Query("INSERT INTO {sessions} (id, user, autoexpire) VALUES ({0}, {1}, {2})", doHash($sessionID.SALT), $user['id'], $_POST['session']?1:0);
+ 
+ 		Report("[b]".$user['name']."[/] logged in.", 1);
+ 		
+@@ -50,7 +50,7 @@
+ 			if($testuser['id'] == $user['id'])
+ 				continue;
+ 
+-			$sha = doHash($_POST['pass'].$salt.$testuser['pss']);
++			$sha = doHash($_POST['pass'].SALT.$testuser['pss']);
+ 			if($testuser['password'] === $sha)
+ 				$matches[] = $testuser['id'];
+ 		}
+@@ -58,7 +58,7 @@
+ 		if (count($matches) > 0)
+ 			Query("INSERT INTO {passmatches} (date,ip,user,matches) VALUES (UNIX_TIMESTAMP(),{0},{1},{2})", $_SERVER['REMOTE_ADDR'], $user['id'], implode(',',$matches));
+ 
+-		die(header("Location: $boardroot"));
++		die(header("Location: ".BOARD_ROOT));
+ 	}
+ }
+ 
+@@ -68,7 +68,7 @@
+ $forgotPass = '';
+ 
+ if(Settings::get("mailResetSender") != "")
+-	$forgotPass = "<button onclick=\"document.location = '".actionLink("lostpass")."'; return false;\">".__("Forgot password?")."</button>";
++	$forgotPass = "<button onclick=\"document.location = '".htmlentities(actionLink("lostpass"),ENT_QUOTES)."'; return false;\">".__("Forgot password?")."</button>";
+ 	
+ $fields = array(
+ 	'username' => "<input type=\"text\" name=\"name\" size=24 maxlength=20>",
+@@ -79,7 +79,7 @@
+ 	'btnForgotPass' => $forgotPass,
+ );
+ 
+-echo "<form name=\"loginform\" action=\"".actionLink("login")."\" method=\"post\">";
++echo "<form name=\"loginform\" action=\"".htmlentities(actionLink("login"))."\" method=\"post\">";
+ 
+ RenderTemplate('form_login', array('fields' => $fields));
+ 
+diff -bur 1.1/pages/lostpass.php 1.2/pages/lostpass.php
+--- 1.1/pages/lostpass.php	2016-03-20 19:51:06.217321300 -0500
++++ 1.2/pages/lostpass.php	2016-03-20 19:51:41.210456700 -0500
+@@ -11,7 +11,7 @@
+ 
+ 	$user = Fetch($user);
+ 
+-	$sha = doHash($_GET['key'].$salt.$user['pss']);
++	$sha = doHash($_GET['key'].SALT.$user['pss']);
+ 
+ 	$user = Query("select id, name, password, pss from {users} where id = {0} and lostkey = {1} and lostkeytimer > {2}", (int)$_GET['id'], $sha, (time() - (60*60)));
+ 
+@@ -22,7 +22,7 @@
+ 
+ 	$newsalt = Shake();
+ 	$newPass = randomString(8);
+-	$sha = doHash($newPass.$salt.$newsalt);
++	$sha = doHash($newPass.SALT.$newsalt);
+ 
+ 	Query("update {users} set lostkey = '', password = {0}, pss = {2} where id = {1}", $sha, (int)$_GET['id'], $newsalt);
+ 	Kill(format(__("Your password has been reset to <strong>{0}</strong>. You can use this password to log in to the board. We suggest you change it as soon as possible."), $newPass), __("Password reset"));
+@@ -43,7 +43,7 @@
+ 		//Make a RANDOM reset key.
+ 		$resetKey = Shake();
+ 
+-		$hashedResetKey = doHash($resetKey.$salt.$user['pss']);
++		$hashedResetKey = doHash($resetKey.SALT.$user['pss']);
+ 
+ 		$from = Settings::get("mailResetSender");
+ 		$to = $user['email'];
+@@ -67,7 +67,7 @@
+ 	MakeCrumbs(array(actionLink('login') => __('Log in'), '' => __('Request password reset')));
+ 	
+ 	echo "
+-	<form action=\"".actionLink("lostpass")."\" method=\"post\">";
++	<form action=\"".htmlentities(actionLink("lostpass"))."\" method=\"post\">";
+ 	
+ 	$fields = array(
+ 		'username' => "<input type=\"text\" name=\"name\" maxlength=20 size=24>",
+diff -bur 1.1/pages/memberlist.php 1.2/pages/memberlist.php
+--- 1.1/pages/memberlist.php	2016-03-20 19:51:06.237348100 -0500
++++ 1.2/pages/memberlist.php	2016-03-20 19:51:41.210456700 -0500
+@@ -153,7 +153,7 @@
+ 
+ 	if($user['picture'])
+ 	{
+-		$pic = str_replace('$root/', $dataUrl, $user['picture']);
++		$pic = str_replace('$root/', DATA_URL, $user['picture']);
+ 		$udata['avatar'] = "<img src=\"".htmlspecialchars($pic)."\" alt=\"\" style=\"max-width: 60px;max-height:60px;\">";
+ 	}
+ 	else
+diff -bur 1.1/pages/newreply.php 1.2/pages/newreply.php
+--- 1.1/pages/newreply.php	2016-03-20 19:51:06.249365500 -0500
++++ 1.2/pages/newreply.php	2016-03-20 19:51:41.226081000 -0500
+@@ -276,7 +276,7 @@
+ );
+ 
+ echo "
+-	<form name=\"postform\" action=\"".actionLink("newreply", $tid)."\" method=\"post\" enctype=\"multipart/form-data\">
++	<form name=\"postform\" action=\"".htmlentities(actionLink("newreply", $tid))."\" method=\"post\" enctype=\"multipart/form-data\">
+ 		<input type=\"hidden\" name=\"ninja\" value=\"$ninja\">";
+ 					
+ RenderTemplate('form_newreply', array('fields' => $fields));
+diff -bur 1.1/pages/newthread.php 1.2/pages/newthread.php
+--- 1.1/pages/newthread.php	2016-03-20 19:51:06.265385200 -0500
++++ 1.2/pages/newthread.php	2016-03-20 19:51:41.241708000 -0500
+@@ -403,7 +403,7 @@
+ echo "
+ 	<script src=\"".resourceLink("js/threadtagging.js")."\"></script>
+ 	<script src=\"".resourceLink('js/polleditor.js')."\"></script>
+-	<form name=\"postform\" action=\"".actionLink("newthread", $fid)."\" method=\"post\" enctype=\"multipart/form-data\">";
++	<form name=\"postform\" action=\"".htmlentities(actionLink("newthread", $fid))."\" method=\"post\" enctype=\"multipart/form-data\">";
+ 					
+ RenderTemplate('form_newthread', array('fields' => $fields, 'pollMode' => (int)$_POST['poll']));
+ 
+diff -bur 1.1/pages/profile.php 1.2/pages/profile.php
+--- 1.1/pages/profile.php	2016-03-20 19:51:06.321525000 -0500
++++ 1.2/pages/profile.php	2016-03-20 19:51:41.288588400 -0500
+@@ -10,9 +10,7 @@
+ else
+ 	Kill(__("Unknown user ID."));
+ 	
+-$uname = $user['name'];
+-if($user['displayname'])
+-	$uname = $user['displayname'];
++$uname = $user['displayname'] ?: $user['name'];
+ 
+ $ugroup = $usergroups[$user['primarygroup']];
+ $usgroups = array();
+@@ -22,8 +20,8 @@
+ 
+ if($id == $loguserid)
+ {
+-	Query("update {users} set newcomments = 0 where id={0}", $loguserid);
+-	$loguser['newcomments'] = false;
++	Query("update {users} set lastprofileview={1} where id={0}", $loguserid, time());
++	DismissNotification('profilecomment', $loguserid, $loguserid);
+ }
+ 
+ $canDeleteComments = ($id == $loguserid && HasPermission('user.deleteownusercomments')) || HasPermission('admin.adminusercomments');
+@@ -40,7 +38,7 @@
+ 			$rBlock = Query("insert into {blockedlayouts} (user, blockee) values ({0}, {1})", $id, $loguserid);
+ 		elseif(!$block && $isBlocked)
+ 			$rBlock = Query("delete from {blockedlayouts} where user={0} and blockee={1} limit 1", $id, $loguserid);
+-		die(header("Location: ".actionLink("profile", $id)));
++		die(header("Location: ".actionLink("profile", $id, '', $user['name'])));
+ 	}
+ 	if($_GET['action'] == "delete")
+ 	{
+@@ -48,7 +46,14 @@
+ 		if ($canDeleteComments || ($postedby == $loguserid && HasPermission('user.deleteownusercomments')))
+ 		{
+ 			Query("delete from {usercomments} where uid={0} and id={1}", $id, (int)$_GET['cid']);
+-			die(header("Location: ".actionLink("profile", $id)));
++			if ($loguserid != $id)
++			{
++				// dismiss any new comment notification that has been sent to that user, unless there are still new comments
++				$lastcmt = FetchResult("SELECT date FROM {usercomments} WHERE uid={0} ORDER BY date DESC LIMIT 1", $id);
++				if ($lastcmt < $user['lastprofileview'])
++					DismissNotification('profilecomment', $id, $id);
++			}
++			die(header("Location: ".actionLink("profile", $id, '', $user['name'])));
+ 		}
+ 	}
+ 
+@@ -56,8 +61,10 @@
+ 	{
+ 		$rComment = Query("insert into {usercomments} (uid, cid, date, text) values ({0}, {1}, {2}, {3})", $id, $loguserid, time(), $_POST['text']);
+ 		if($loguserid != $id)
+-			Query("update {users} set newcomments = 1 where id={0}", $id);
+-		die(header("Location: ".actionLink("profile", $id)));
++		{
++			SendNotification('profilecomment', $id, $id);
++		}
++		die(header("Location: ".actionLink("profile", $id, '', $user['name'])));
+ 	}
+ }
+ 
+@@ -124,9 +131,9 @@
+ if($user['email'] == "")
+ 	$emailField = __("None given");
+ else if ($user['showemail'])
+-	$emailField = "<span id=\"emailField\">".__("Public")." <button style=\"font-size: 0.7em;\" onclick=\"$(this.parentNode).load('{$boardroot}ajaxcallbacks.php?a=em&amp;id=".$id."');\">".__("Show")."</button></span>";
++	$emailField = "<span id=\"emailField\">".__("Public")." <button style=\"font-size: 0.7em;\" onclick=\"$(this.parentNode).load('".BOARD_ROOT."ajaxcallbacks.php?a=em&amp;id=".$id."');\">".__("Show")."</button></span>";
+ else if (HasPermission('admin.editusers'))
+-	$emailField = "<span id=\"emailField\">".__("Private")." <button style=\"font-size: 0.7em;\" onclick=\"$(this.parentNode).load('{$boardroot}ajaxcallbacks.php?a=em&amp;id=".$id."');\">".__("Snoop")."</button></span>";
++	$emailField = "<span id=\"emailField\">".__("Private")." <button style=\"font-size: 0.7em;\" onclick=\"$(this.parentNode).load('".BOARD_ROOT."ajaxcallbacks.php?a=em&amp;id=".$id."');\">".__("Snoop")."</button></span>";
+ 
+ 
+ $profileParts = array();
+@@ -278,7 +285,7 @@
+ 		WHERE uc.uid={0}
+ 		ORDER BY uc.date ASC LIMIT {1u},{2u}", $id, $realFrom, $realLen);
+ 
+-$pagelinks = PageLinksInverted(actionLink("profile", $id, "from="), $cpp, $from, $total);
++$pagelinks = PageLinksInverted(actionLink("profile", $id, "from=", $user['name']), $cpp, $from, $total);
+ 
+ $comments = array();
+ while($comment = Fetch($rComments))
+@@ -303,7 +310,7 @@
+ if($canComment)
+ {
+ 	$commentField = "
+-		<form name=\"commentform\" method=\"post\" action=\"".actionLink("profile")."\">
++		<form name=\"commentform\" method=\"post\" action=\"".htmlentities(actionLink("profile"))."\">
+ 			<input type=\"hidden\" name=\"id\" value=\"$id\">
+ 			<input type=\"text\" name=\"text\" style=\"width: 80%;\" maxlength=\"255\">
+ 			<input type=\"submit\" name=\"actionpost\" value=\"".__("Post")."\">
+diff -bur 1.1/pages/register.php 1.2/pages/register.php
+--- 1.1/pages/register.php	2016-03-20 19:51:06.352779500 -0500
++++ 1.2/pages/register.php	2016-03-20 19:51:41.304214200 -0500
+@@ -14,7 +14,7 @@
+ {
+ 	$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_ECB);
+ 	$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+-	$kuridata = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, md5($kurikey, true), base64_decode($_POST['kuridata']), MCRYPT_MODE_ECB, $iv);
++	$kuridata = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, md5(KURIKEY, true), base64_decode($_POST['kuridata']), MCRYPT_MODE_ECB, $iv);
+ 	if (!$kuridata) Kill('Hack attempt detected');
+ 	
+ 	$kuridata = explode('|', $kuridata);
+@@ -22,7 +22,7 @@
+ 	$kuriseed = intval($kuridata[0]);
+ 	$check = intval($kuridata[1]);
+ 	$kurichallenge = $kuridata[2];
+-	$kurichallenge = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, md5($kurikey.$check, true), base64_decode($kurichallenge), MCRYPT_MODE_ECB, $iv);
++	$kurichallenge = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, md5(KURIKEY.$check, true), base64_decode($kurichallenge), MCRYPT_MODE_ECB, $iv);
+ 	if (!$kurichallenge) Kill('Hack attempt detected');
+ 	
+ 	$kurichallenge = explode('|', $kurichallenge);
+@@ -89,7 +89,7 @@
+ 	else
+ 	{
+ 		$newsalt = Shake();
+-		$sha = doHash($_POST['pass'].$salt.$newsalt);
++		$sha = doHash($_POST['pass'].SALT.$newsalt);
+ 		$uid = FetchResult("SELECT id+1 FROM {users} WHERE (SELECT COUNT(*) FROM {users} u2 WHERE u2.id={users}.id+1)=0 ORDER BY id ASC LIMIT 1");
+ 		if($uid < 1) $uid = 1;
+ 
+@@ -115,7 +115,7 @@
+ 			if($testuser['id'] == $user['id'])
+ 				continue;
+ 
+-			$sha = doHash($_POST['pass'].$salt.$testuser['pss']);
++			$sha = doHash($_POST['pass'].SALT.$testuser['pss']);
+ 			if($testuser['password'] === $sha)
+ 				$matches[] = $testuser['id'];
+ 		}
+@@ -130,8 +130,8 @@
+ 		if($_POST['autologin'])
+ 		{
+ 			$sessionID = Shake();
+-			setcookie("logsession", $sessionID, 0, $boardroot, "", false, true);
+-			Query("INSERT INTO {sessions} (id, user, autoexpire) VALUES ({0}, {1}, {2})", doHash($sessionID.$salt), $user['id'], 0);
++			setcookie("logsession", $sessionID, 0, BOARD_ROOT, "", false, true);
++			Query("INSERT INTO {sessions} (id, user, autoexpire) VALUES ({0}, {1}, {2})", doHash($sessionID.SALT), $user['id'], 0);
+ 			die(header("Location: ".actionLink('profile', $user['id'], '', $user['name'])));
+ 		}
+ 		else
+@@ -147,16 +147,16 @@
+ }
+ 
+ 
+-$kuriseed = crc32($kurikey.microtime());
++$kuriseed = crc32(KURIKEY.microtime());
+ srand($kuriseed);
+ $check = time();
+ $kurichallenge = "{$kuriseed}|{$check}|".rand(3,12);
+ 
+ $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_ECB);
+ $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+-$kurichallenge = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, md5($kurikey.$check, true), $kurichallenge, MCRYPT_MODE_ECB, $iv);
++$kurichallenge = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, md5(KURIKEY.$check, true), $kurichallenge, MCRYPT_MODE_ECB, $iv);
+ $kurichallenge = base64_encode($kurichallenge);
+-$kuridata = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, md5($kurikey, true), "{$kuriseed}|{$check}|{$kurichallenge}", MCRYPT_MODE_ECB, $iv);
++$kuridata = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, md5(KURIKEY, true), "{$kuriseed}|{$check}|{$kurichallenge}", MCRYPT_MODE_ECB, $iv);
+ $kuridata = base64_encode($kuridata);
+ 
+ $fields = array(
+@@ -174,7 +174,7 @@
+ 	'btnRegister' => "<input type=\"submit\" name=\"register\" value=\"".__("Register")."\">",
+ );
+ 
+-echo "<form action=\"".actionLink("register")."\" method=\"post\">";
++echo "<form action=\"".htmlentities(actionLink("register"))."\" method=\"post\">";
+ 
+ RenderTemplate('form_register', array('fields' => $fields));
+ 
+@@ -198,21 +198,10 @@
+ 	if ($_SERVER['HTTP_X_FORWARDED_FOR'] && $_SERVER['HTTP_X_FORWARDED_FOR'] != $_SERVER['REMOTE_ADDR'])
+ 		return true;
+ 		
+-	if (!function_exists('curl_init'))
++	$result = QueryURL('http://www.stopforumspam.com/api?ip='.urlencode($_SERVER['REMOTE_ADDR']));
++	if (!$result)
+ 		return false;
+ 		
+-	$page = curl_init('http://www.stopforumspam.com/api?ip='.$_SERVER['REMOTE_ADDR']);
+-	if ($page === FALSE)
+-		return false;
+-	
+-	curl_setopt($page, CURLOPT_TIMEOUT, 10);
+-	curl_setopt($page, CURLOPT_CONNECTTIMEOUT, 10);
+-	curl_setopt($page, CURLOPT_RETURNTRANSFER, TRUE);
+-	curl_setopt($page, CURLOPT_USERAGENT, 'Blargboard');
+-		
+-	$result = curl_exec($page);
+-	curl_close($page);
+-
+ 	if (stripos($result, '<appears>yes</appears>') !== FALSE)
+ 		return true;
+ 		
+diff -bur 1.1/pages/reportpost.php 1.2/pages/reportpost.php
+--- 1.1/pages/reportpost.php	2016-03-20 19:51:06.368406600 -0500
++++ 1.2/pages/reportpost.php	2016-03-20 19:51:41.319841300 -0500
+@@ -42,6 +42,8 @@
+ 		
+ 	Query("UPDATE {pmsgs_text} SET text={0} WHERE pid={1}", $report, $pmid);
+ 	
++	SendNotification('pm', $pmid, -1);
++	
+ 	die(header('Location: '.actionLink('post', $pid)));
+ }
+ 
+diff -bur 1.1/pages/search.php 1.2/pages/search.php
+--- 1.1/pages/search.php	2016-03-20 19:51:06.389018900 -0500
++++ 1.2/pages/search.php	2016-03-20 19:51:41.335977200 -0500
+@@ -56,7 +56,7 @@
+ MakeCrumbs(array(actionLink("search") => __("Search")));
+ 
+ echo "
+-	<form action=\"".actionLink("search")."\" method=\"post\">";
++	<form action=\"".htmlentities(actionLink("search"))."\" method=\"post\">";
+ 	
+ $fields = array(
+ 	'terms' => "<input type=\"text\" maxlength=\"1024\" name=\"q\" style=\"width:100%;border-sizing:border-box;-moz-border-sizing:border-box;\" value=\"".htmlspecialchars($_REQUEST['q'])."\">",
+diff -bur 1.1/pages/sendprivate.php 1.2/pages/sendprivate.php
+--- 1.1/pages/sendprivate.php	2016-03-20 19:51:06.401036700 -0500
++++ 1.2/pages/sendprivate.php	2016-03-20 19:51:41.343987400 -0500
+@@ -191,6 +191,8 @@
+ 					
+ 					$rPM = Query("insert into {pmsgs} (id, userto, userfrom, conv_start, date, ip, msgread, drafting) values ({0}, {1}, {2}, {3}, {4}, {5}, 0, {6})", 
+ 						$pid, $recipient, $loguserid, $cs, time(), $_SERVER['REMOTE_ADDR'], 0);
++						
++					SendNotification('pm', $pid, $recipient);
+ 				}
+ 
+ 				die(header("Location: ".actionLink("private", "", "show=1")));
+diff -bur 1.1/pages/showprivate.php 1.2/pages/showprivate.php
+--- 1.1/pages/showprivate.php	2016-03-20 19:51:06.409046100 -0500
++++ 1.2/pages/showprivate.php	2016-03-20 19:51:41.352000100 -0500
+@@ -45,11 +45,15 @@
+ if(!$snoop && $pm['userto'] == $loguserid)
+ {
+ 	Query("update {pmsgs} set msgread=1 where id={0}", $pm['id']);
++	DismissNotification('pm', $pm['id'], $loguserid);
++	
+ 	$links[] = actionLinkTag(__("Send reply"), "sendprivate", "", "pid=".$pm['id']);
+ }
+ else if ($_GET['markread'])
+ {
+ 	Query("update {pmsgs} set msgread=1 where id={0}", $pm['id']);
++	DismissNotification('pm', $pm['id'], -1);
++	
+ 	die(header('Location: '.actionLink('private')));
+ }
+ 	
+diff -bur 1.1/pages/thread.php 1.2/pages/thread.php
+--- 1.1/pages/thread.php	2016-03-20 19:51:06.429074200 -0500
++++ 1.2/pages/thread.php	2016-03-20 19:51:41.368020200 -0500
+@@ -302,7 +302,7 @@
+ 	);
+ 
+ 	echo "
+-	<form action=\"".actionLink("newreply", $tid)."\" method=\"post\">
++	<form action=\"".htmlentities(actionLink("newreply", $tid))."\" method=\"post\">
+ 		<input type=\"hidden\" name=\"ninja\" value=\"{$ninja}\">";
+ 	
+ 	RenderTemplate('form_quickreply', array('fields' => $fields));
+diff -bur 1.1/plugins/categoryuploader/lib.php 1.2/plugins/categoryuploader/lib.php
+--- 1.1/plugins/categoryuploader/lib.php	2016-03-20 19:51:06.501172500 -0500
++++ 1.2/plugins/categoryuploader/lib.php	2016-03-20 19:51:41.403340300 -0500
+@@ -2,7 +2,7 @@
+ 
+ // Uploader support hub
+ 
+-$uploaddir = $dataDir."uploader";
++$uploaddir = DATA_DIR."uploader";
+ 
+ // uploader settings
+ 
+diff -bur 1.1/plugins/categoryuploader/page_downloads.php 1.2/plugins/categoryuploader/page_downloads.php
+--- 1.1/plugins/categoryuploader/page_downloads.php	2016-03-20 19:51:06.509180000 -0500
++++ 1.2/plugins/categoryuploader/page_downloads.php	2016-03-20 19:51:41.403340300 -0500
+@@ -2,7 +2,7 @@
+ 
+ $title = 'Downloads';
+ 
+-$rootdir = $dataDir."uploader";
++$rootdir = DATA_DIR."uploader";
+ 
+ if ($_GET['id'])
+ {
+diff -bur 1.1/plugins/categoryuploader/page_uploader.php 1.2/plugins/categoryuploader/page_uploader.php
+--- 1.1/plugins/categoryuploader/page_uploader.php	2016-03-20 19:51:06.513184700 -0500
++++ 1.2/plugins/categoryuploader/page_uploader.php	2016-03-20 19:51:41.418961400 -0500
+@@ -4,7 +4,7 @@
+ 
+ $title = __("Uploader");
+ 
+-$rootdir = $dataDir."uploader";
++$rootdir = DATA_DIR."uploader";
+ 
+ if($uploaderWhitelist)
+ 	$goodfiles = explode(" ", Settings::pluginGet('uploaderWhitelist'));
+@@ -53,7 +53,7 @@
+ 	<script type=\"text/javascript\">
+ 		window.addEventListener(\"load\", function() { hookUploadCheck(\"newfile\", 1, {1}) }, false);
+ 	</script>
+-	<form action=\"".actionLink("uploader")."\" method=\"post\" enctype=\"multipart/form-data\">
++	<form action=\"".htmlentities(actionLink("uploader"))."\" method=\"post\" enctype=\"multipart/form-data\">
+ 		<input type='hidden' name='cat' value='${_GET["cat"]}'>
+ 		<table class=\"outline margin\">
+ 			<tr class=\"header0\">
+diff -bur 1.1/plugins/categoryuploader/page_uploaderlist.php 1.2/plugins/categoryuploader/page_uploaderlist.php
+--- 1.1/plugins/categoryuploader/page_uploaderlist.php	2016-03-20 19:51:06.525202500 -0500
++++ 1.2/plugins/categoryuploader/page_uploaderlist.php	2016-03-20 19:51:41.418961400 -0500
+@@ -4,7 +4,7 @@
+ 
+ $title = __("Uploader");
+ 
+-$rootdir = $dataDir."uploader";
++$rootdir = DATA_DIR."uploader";
+ 
+ if($uploaderWhitelist)
+ 	$goodfiles = explode(" ", $uploaderWhitelist);
+@@ -13,7 +13,7 @@
+ 
+ function listCategory($cat)
+ {
+-	global $loguser, $loguserid, $rootdir, $userSelectUsers, $boardroot;
++	global $loguser, $loguserid, $rootdir, $userSelectUsers, BOARD_ROOT;
+ 
+ 	if(isset($_GET['sort']) && $_GET['sort'] == "filename" || $_GET['sort'] == "date")
+ 		$skey = $_GET['sort'];
+@@ -141,7 +141,7 @@
+ 			<tr class=\"cell{0}\">
+ 				{7}
+ 				<td>
+-					<a href=\"{$boardroot}get.php?id={1}\">{2}</a>{3}
++					<a href=\"".BOARD_ROOT."get.php?id={1}\">{2}</a>{3}
+ 				</td>
+ 				<td>
+ 					{4}
+@@ -204,7 +204,7 @@
+ 				actionLink("uploaderlist", "", "cat=".$cat["id"]) => $cat["name"],
+ 				), $links);
+ 
+-print "<form method=\"post\" action=\"".actionLink("uploader", "", "cat=${_GET["cat"]}")."\">";
++print "<form method=\"post\" action=\"".htmlentities(actionLink("uploader", "", "cat=${_GET["cat"]}"))."\">";
+ listCategory($_GET["cat"]);
+ print '<input type="hidden" name="token" value="'.$loguser['token'].'" />';
+ print "</form>";
+Only in 1.1/plugins: embeds
+Only in 1.1/plugins: ircpage
+diff -bur 1.1/plugins/ircreport/newuser.php 1.2/plugins/ircreport/newuser.php
+--- 1.1/plugins/ircreport/newuser.php	2016-03-20 19:51:06.714747800 -0500
++++ 1.2/plugins/ircreport/newuser.php	2016-03-20 19:51:41.450214300 -0500
+@@ -3,10 +3,10 @@
+ $c1 = ircColor(Settings::pluginGet("color1"));
+ $c2 = ircColor(Settings::pluginGet("color2"));
+ 
+-$link = getServerDomainNoSlash().actionLink("profile", $user["id"], "", "_");
++$link = getServerDomainNoSlash().actionLink("profile", $user['id'], "", $user['name']);
+ 
+ 	ircReport("\003".$c2."New user: \003$c1"
+-		.ircUserColor($user["name"], $user['sex'], 0)
++		.ircUserColor($user['name'], $user['sex'], 0)
+ 		."\003$c2 -- "
+ 		.$link
+ 		);
+diff -bur 1.1/plugins/ircreport/page_botctrl.php 1.2/plugins/ircreport/page_botctrl.php
+--- 1.1/plugins/ircreport/page_botctrl.php	2016-03-20 19:51:06.732561900 -0500
++++ 1.2/plugins/ircreport/page_botctrl.php	2016-03-20 19:51:41.465840600 -0500
+@@ -2,7 +2,7 @@
+ 
+ if ($loguserid != 1) { require('pages/404.php'); return; }
+ 
+-$key = hash('sha256', "{$loguserid},{$loguser['pss']},{$salt},sdi65fdsg4fd65g4fdg65g");
++$key = hash('sha256', "{$loguserid},{$loguser['pss']},".SALT.",sdi65fdsg4fd65g4fdg65g");
+ 
+ if ($_POST['stuff'] && $_POST['key'] === $key)
+ 	ircReport($_POST['stuff']);
+diff -bur 1.1/plugins/wikixd/wikilib.php 1.2/plugins/wikixd/wikilib.php
+--- 1.1/plugins/wikixd/wikilib.php	2016-03-20 19:51:09.946693900 -0500
++++ 1.2/plugins/wikixd/wikilib.php	2016-03-20 19:51:43.669003700 -0500
+@@ -160,7 +160,7 @@
+ 
+ // TODO: implement wiki banning/localmod system
+ $canedit = $loguserid && HasPermission('wiki.editpages');
+-$token = hash('sha256', "{$loguserid},{$loguser['pss']},{$salt},wikiXD,sfg657gsfh685gh7s4sg6f5hgf");
++$token = hash('sha256', "{$loguserid},{$loguser['pss']},".SALT.",wikiXD,sfg657gsfh685gh7s4sg6f5hgf");
+ 
+ $links = actionLinkTagItem('Recent changes', 'wikichanges');
+ if ($canedit) $links .= actionLinkTagItem('Create page', 'wikiedit', '', 'createnew');
+diff -bur 1.1/README.md 1.2/README.md
+--- 1.1/README.md	2016-03-20 19:51:02.436406900 -0500
++++ 1.2/README.md	2016-03-20 19:51:39.153279400 -0500
+@@ -19,20 +19,15 @@
+ 
+ This board follows the Acmlmboard concept. If you don't know Acmlmboard, you don't know what you're missing.
+ 
+--------------------------------------------------------------------------------
+-
+-# Requirements
++## Requirements
+ 
+-Blargboard requires PHP 5.3. With a few changes, it could be lowered to 5.2, so this will
+-be considered.
++Blargboard requires PHP 5.3. You also need the mcrypt extension.
+ 
+ There is no exact requirement for MySQL, but make sure to have a recent version.
+ 
+ Everything else is provided in the package.
+ 
+--------------------------------------------------------------------------------
+-
+-# How to install and use
++## How to install and use
+ 
+ PHP and MySQL knowledge isn't required to use Blargboard but is a plus.
+ 
+@@ -45,12 +40,15 @@
+ We recommend you take some time and make your own board themes and banner to give your board a truly unique feel.
+ If you have HTML knowledge, you can even edit the templates to change your board's look more in-depth.
+ 
+-DO NOT TRY USING THE PROVIDED PLUGINS. They haven't be adapted to the newer Blargboard
+-codebase yet. Some may work, but others may break parts of your board.
++## Working plugins
+ 
+--------------------------------------------------------------------------------
++The following plugins have been updated and are known to work with current Blargboard. Any other plugins in the repo are probably broken, so don't try using them.
++
++ * CustomUserNameColors
++ * ircreport
++ * layoutblockstats
+ 
+-# How to update your board
++## How to update your board
+ 
+ Download the most recent Blargboard package (be it an official release or a Git package).
+ 
+@@ -66,9 +64,7 @@
+ 
+ Updating from Blargboard 1.0 isn't covered.
+ 
+--------------------------------------------------------------------------------
+-
+-# Features
++## Features
+ 
+  * Flexible permission system
+  * Plugin system
+@@ -91,9 +87,7 @@
+ copy, you need to check for changes to database.sql and modify your database's structure
+ accordingly.
+ 
+--------------------------------------------------------------------------------
+-
+-# Board owner's tips
++## Board owner's tips
+ 
+ http://board.example/?page=makelr -> regenerates the L/R tree used for forum listings and such.
+ Use if some of your forums are showing up in wrong places.
+@@ -118,19 +112,18 @@
+ 
+ How to (insert action): first look into your board's admin panel, settings panel, etc... then if you still can't find, ask us. But please don't be a noob and ask us about every little thing.
+ 
+--------------------------------------------------------------------------------
+-
+-# Support
++## Support, troubleshooting, etc
+ 
+ The Blargboard help forum is at Kuribo64: http://kuribo64.net/?page=forum&id=82
+ 
+ If anything goes wrong with your board, go there and let us know. Make sure to describe your problems in detail, our crystal ball is scratched so we can't see well.
+ 
+-YOU WILL NOT RECEIVE HELP IF YOU HAVEN'T READ THE INSTRUCTIONS WHEN INSTALLING YOUR BOARD.
++If the error is a 'MySQL Error', to get a detailed report, you need to open config/database.php in a text editor, find `$debugMode = 0;` and replace it with `$debugMode = 1;`. 
++This will make the board give you the MySQL error message and the query which went wrong. Once you're done troubleshooting your board, it is recommended that you edit config/database.php back so that `$debugMode` is 0.
+ 
+--------------------------------------------------------------------------------
++YOU WILL NOT RECEIVE HELP IF YOU HAVEN'T READ THE INSTRUCTIONS WHEN INSTALLING YOUR BOARD.
+ 
+-# TODO list
++## TODO list
+ 
+ (no particular order there)
+ 
+@@ -142,6 +135,7 @@
+  * more TODO at Kuribo64 and RVLution
+  
+  * low priority: change/remove file headers? most of the original files still say 'AcmlmBoard XD'
++ * besides it'd be an opportunity to add a license like the GPL
+ 
+ -------------------------------------------------------------------------------
+ 
+Only in 1.1: sidebar.php
+diff -bur 1.1/templates/pagelayout.tpl 1.2/templates/pagelayout.tpl
+--- 1.1/templates/pagelayout.tpl	2016-03-20 19:51:10.540547500 -0500
++++ 1.2/templates/pagelayout.tpl	2016-03-20 19:51:43.871371500 -0500
+@@ -7,7 +7,7 @@
+ 				<table class="layout-table">
+ 				<tr>
+ 				<td>
+-					<a href="./"><img id="theme_banner" src="{$layout_logopic}" alt="{$boardname}" title="{$boardname}"></a>
++					<a href="{actionLink page='home'}"><img id="theme_banner" src="{$layout_logopic}" alt="{$boardname}" title="{$boardname}"></a>
+ 				</td>
+ 				<td>
+ 					<table class="outline" id="headerInfo">
+@@ -45,20 +45,20 @@
+ 							{/foreach}
+ 						</ul>
+ 					</div>
+-					<div id="notifMenuContainer" class="dropdownContainer">
+ 						{$numnotifs=count($notifications)}
+-						<div id="notifMenuButton" class="navButton {if $numnotifs}hasNotifs{else}noNotif{/if}">
++					<div id="notifMenuContainer" class="dropdownContainer {if $numnotifs}hasNotifs{else}noNotif{/if}">
++						<div id="notifMenuButton" class="navButton">
+ 							Notifications
+ 							<span id="notifCount">{$numnotifs}</span>
+-							{if $numnotifs}<i class="icon-caret-down"></i>{/if}
++							<i class="icon-caret-down"></i>
+ 						</div>
++						<ul id="notifList" class="dropdownMenu">
+ 						{if $numnotifs}
+-						<ul class="dropdownMenu">
+ 							{foreach $notifications as $notif}
+ 								<li>{$notif.text}<br><small>{$notif.formattedDate}</small>
+ 							{/foreach}
+-						</ul>
+ 						{/if}
++						</ul>
+ 					</div>
+ 					<span class="navButton">
+ 						<a href="#" onclick="$('#logout').submit(); return false;">Log out</a>
+diff -bur 1.1/themes/brightboard/style.css 1.2/themes/brightboard/style.css
+--- 1.1/themes/brightboard/style.css	2016-03-20 19:51:10.587427400 -0500
++++ 1.2/themes/brightboard/style.css	2016-03-20 19:51:43.907108000 -0500
+@@ -3,19 +3,19 @@
+ body
+ {
+ 	background: #ccc;
+-	color: #000;
++	color: #444;
+ }
+ 
+-table
++table, ul.dropdownMenu
+ {
+-	color: #000;
++	color: #444;
+ }
+ 
+-a:link, ul.dropdownMenu li a:link,
+-a:visited, ul.dropdownMenu li a:visited
++a:link, ul.dropdownMenu li a:link, td.crumb-container > table a:link,
++a:visited, ul.dropdownMenu li a:visited, td.crumb-container > table a:visited
+ { color: #086; }
+-a:active, ul.dropdownMenu li a:active,
+-a:hover, ul.dropdownMenu li a:hover
++a:active, ul.dropdownMenu li a:active, td.crumb-container > table a:active,
++a:hover, ul.dropdownMenu li a:hover, td.crumb-container > table a:hover
+ { color: #0ba; text-decoration: underline; }
+ 
+ .header0 th a:link, .header1 th a:link, table.post td.userlink a:link, table.post td.meta a:link,
+@@ -25,7 +25,7 @@
+ .header0 th a:hover, .header1 th a:hover, table.post td.userlink a:hover, table.post td.meta a:hover
+ { color: #fff; text-decoration: underline; }
+ 
+-.userlink
++.userlink, th ul.dropdownMenu .userlink
+ {
+ 	text-shadow: 1px 1px 2px #9b9b9b;
+ }
+@@ -137,8 +137,7 @@
+ tr.cell0 > td:not(.cell1), tr.cell2 > td:not(.cell1),
+ table.post td.side:not(.userlink)
+ {
+-	background: #dde8e4;/*#222c28;*/
+-	/* 282828 */
++	background: #dde4e0;
+ }
+ 
+ 
+@@ -191,6 +190,9 @@
+ table#page-container > tbody > tr:last-child > td.crumb-container > table > tbody > tr > *
+ {
+ 	border-radius: 0;
++	background: #ddd;
++	text-shadow: none;
++	color: #444;
+ }
+ 
+ #header-sep
+diff -bur 1.1/update.php 1.2/update.php
+--- 1.1/update.php	2016-03-20 19:51:10.603054100 -0500
++++ 1.2/update.php	2016-03-20 19:51:43.922734600 -0500
+@@ -94,7 +94,7 @@
+ 		
+ 	if (!NumRows($res)) die('Invalid username or password.'.$footer);
+ 	$user = Fetch($res);
+-	if (hash('sha256', $boardpassword.$salt.$user['pss'], FALSE) !== $user['password'])
++	if (hash('sha256', $boardpassword.SALT.$user['pss'], FALSE) !== $user['password'])
+ 		die('Invalid username or password.'.$footer);
+ 	
+ 	Upgrade();
